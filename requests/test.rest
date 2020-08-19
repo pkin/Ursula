@@ -1,0 +1,52 @@
+
+
+
+
+get http://localhost:3000
+
+
+###
+
+get http://localhost:3000/api/nextCommand
+
+
+
+###
+
+
+post http://localhost:3000/api/saveXML
+Content-Type: application/json
+
+{
+    "xml": "<xml xmlns='http://www.w3.org/1999/xhtml'>"
+}
+
+###
+
+
+post http://localhost:3000/api/saveXML
+Content-Type: application/json
+
+{
+    "test1": "123",
+    "test2": "456"
+}
+
+###
+
+
+post http://localhost:3000/savetest
+Content-Type: application/json
+
+{
+    "test1": "123",
+    "test2": "456"
+}
+
+###
+
+###
+get http://localhost:3000/savetest
+
+###
+
