@@ -16,6 +16,7 @@
   <script src="./socket.io/socket.io.js"></script>
   <script src="./code.js"></script>
   <script src="./blocks.js"></script>
+
 </head>
 
 <body>
@@ -34,17 +35,23 @@
     </tr>
     <tr>
       <td>
-          <!-- <div id="test"> -->
-            <!-- Ajettava käsky: <span id="flag">ohjelma ei ole käynnissä</span>  -->
-            <!-- <span id="testiemittori" hidden>&nbsp;&nbsp;&nbsp; Testi: <button id="testButton">seuraava käsky</button></span> -->
-          <!-- </div> -->
+        <span class="valikkopainike" id="valikkoAuki">&#9776; Valikko</span>
       </td>
       <td>
-        <label>Tiedosto: </label><input disabled value="XYZ" id="saveName">
-        <!-- <button onclick="loadTest()">Lataa</button> -->
-        <button disabled id="saveButton">Tallenna</button>
-        <button disabled id="loadButton">Lataa</button>
-        <select disabled id="saves"></select>
+
+        <div id="valikko" class="overlay">
+          <a href="javascript:void(0)" id="valikkoKiinni" class="closebtn">&times;</a>
+          <div class="overlay-content">
+            <a href="#" disabled>Ohjelman nimi</a>
+            <input value="XYZ" id="saveName">
+            <a href="#">____</a>
+            <br>
+            <a id="saveButton" href="#">Tallenna</a>
+            <a href="#">Lataa</a>
+            <a href="#">Tiedot</a>
+            <a href="#">Info</a>
+          </div>
+        </div>
       </td>
     </tr>
     <tr>

@@ -50,6 +50,72 @@ io.on('connection', (socket) => {
 });
 
 
+app.get('/api/onkoTallennusJoOlemassa/:id', (req, res) => {
+    
+    const fs = require('fs');
+    const filename = './tallennukset/' + req.params.id + '.xml';
+
+    fs.readFile(filename, (err, data) => {
+        if (err) {
+            console.log(err);
+            res.writeHead(200, {'Content-Type': 'text/xml'});
+            res.write("ei löydy");
+            res.end();
+        }
+        else if (data) {
+            res.writeHead(200, {'Content-Type': 'text/xml'});
+            res.write("löytyy");
+            res.end();
+        } 
+        // else {
+        //     res.writeHead(200, {'Content-Type': 'text/xml'});
+        //     res.write("ei löydy");
+        //     res.end();
+        // }
+    }); 
+
+})
+
+app.post('/api/saveXML3/:id', (req, res, next) => {
+
+    const fs = require('fs');
+    const filename = './tallennukset/' + req.params.id + '.xml';
+    
+    fs.writeFile(filename, req.body.xml, function (err) {
+        if (err) throw err;
+            console.log('Saved!');
+    });
+
+    return res.status(200).json( req.body )
+})
+
+
+
+app.get('/api/XMLstorage', (req, res) => {
+    
+    const fs = require('fs');
+    const filename = 'temp_xml_tallennus.txt'
+    res.writeHead(200, {'Content-Type': 'text/xml'});
+    // res.write('<html>\n<body>\n');
+    res.write("dickbutt");
+    // res.write('</body>\n</html>');
+    res.end();
+    // console.log(req)
+    // fs.readFile(filename, (err, data) => {
+    //     if (err) {
+    //         return console.log(err);
+    //     }
+    //     res.writeHead(200, {'Content-Type': 'text/xml'});
+    //     // res.write('<html>\n<body>\n');
+    //     res.write(data);
+    //     // res.write('</body>\n</html>');
+    //     res.end();
+    //}); 
+
+});
+
+
+
 const PORT = process.env.PORT || 3000
 http.listen(PORT, () => {
     console.log('listening on *:' + PORT);

@@ -1,20 +1,17 @@
 
 
 
-
 get http://localhost:3000/api/testFlag
-
-
-
 ###
 
+get http://localhost:3000/api/XMLstorage
+###
 
+get http://localhost:3000/api/onkoTallennusJoOlemassa/XYZ
+###
 
-
-
-
-
-
+get http://localhost:3000/api/onkoTallennusJoOlemassa/XYZZ
+###
 
 
 

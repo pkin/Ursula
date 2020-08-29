@@ -469,10 +469,12 @@ Code.init = function() {
 
 // Omien nappien sidonta
   Code.bindClick('saveButton', Code.saveXML);
-  Code.bindClick('loadButton', Code.loadXML);
-  Code.bindClick('saves', Code.loadSaves);
-  Code.bindChange('saves', Code.selectSave);
-  // Code.bindClick('testButton', Code.testFlag);
+  // Code.bindClick('loadButton', Code.loadXML);
+  // Code.bindClick('saves', Code.loadSaves);
+  // Code.bindChange('saves', Code.selectSave);
+  Code.bindClick('valikkoAuki', () => { document.getElementById("valikko").style.width = "100%"; });
+  Code.bindClick('valikkoKiinni', () => { document.getElementById("valikko").style.width = "0%"; });
+  // Code.bindClick('closeLoadOverlay', () => { document.getElementById('overlay').hidden = true });
   
   // Disable the link button if page isn't backed by App Engine storage.
   var linkButton = document.getElementById('linkButton');
@@ -624,7 +626,11 @@ Code.runJS = function() {
 
 
 
+Code.PORT = 3000;
 
+Code.ohjelmanNimiSamaKuinLadattaessa = true;
+Code.onkoLadattu = false;
+Code.onkoNimeäMuutettuLataamisenJälkeen = false;
 
 
 // oma
@@ -643,7 +649,9 @@ Code.saveXML = function() {
   // let myBody = '{"name":"' + filename + '", "xml":\"' + xml + '\"}'
 
   const userAction = async () => {
-    const response = await fetch('http://localhost:3003/api/saveXML2/' + id, {
+    // const response = await fetch('http://localhost:/api/saveXML3/' + id, {
+    // const response = await fetch('http://localhost:' + PORT + '/api/saveXML3/' + id, {
+    const response = await fetch(`http://localhost:${PORT}/api/saveXML3/${id}`, {
       method: 'POST',
       body: myBody, // string or object
       headers: {
@@ -662,7 +670,7 @@ Code.loadXML = function() {
   const id = document.getElementById('saveName').value
 
   const userAction = async () => {
-    const response = await fetch('http://localhost:3003/api/saveXML2/' + id);
+    const response = await fetch('http://localhost:3000/api/saveXML2/' + id);
     const xml = await response.text();
     Code.workspace.clear();
     Code.loadBlocks(xml);
@@ -676,7 +684,7 @@ Code.loadXML = function() {
 Code.loadSaves = () => {
 
   const userAction = async () => {
-    const response = await fetch('http://localhost:3003/api/saveXML3/');
+    const response = await fetch('http://localhost:3000/api/saveXML3/');
     const list = await response.text();
     document.getElementById('saves').innerHTML = '<option disabled selected value></option>' + list;
   }
