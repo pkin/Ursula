@@ -37,51 +37,51 @@ const PORT = 3000;
  * Lookup for names of supported languages.  Keys should be in ISO 639 format.
  */
 Code.LANGUAGE_NAME = {
-  'ar': 'العربية',
-  'be-tarask': 'Taraškievica',
-  'br': 'Brezhoneg',
-  'ca': 'Català',
-  'cs': 'Česky',
-  'da': 'Dansk',
-  'de': 'Deutsch',
-  'el': 'Ελληνικά',
+  // 'ar': 'العربية',
+  // 'be-tarask': 'Taraškievica',
+  // 'br': 'Brezhoneg',
+  // 'ca': 'Català',
+  // 'cs': 'Česky',
+  // 'da': 'Dansk',
+  // 'de': 'Deutsch',
+  // 'el': 'Ελληνικά',
   'en': 'English',
-  'es': 'Español',
-  'et': 'Eesti',
-  'fa': 'فارسی',
+  // 'es': 'Español',
+  // 'et': 'Eesti',
+  // 'fa': 'فارسی',
   'fi': 'Finnish',
-  'fr': 'Français',
-  'he': 'עברית',
-  'hrx': 'Hunsrik',
-  'hu': 'Magyar',
-  'ia': 'Interlingua',
-  'is': 'Íslenska',
-  'it': 'Italiano',
-  'ja': '日本語',
-  'kab': 'Kabyle',
-  'ko': '한국어',
-  'mk': 'Македонски',
-  'ms': 'Bahasa Melayu',
-  'nb': 'Norsk Bokmål',
-  'nl': 'Nederlands, Vlaams',
-  'oc': 'Lenga d\'òc',
-  'pl': 'Polski',
-  'pms': 'Piemontèis',
-  'pt-br': 'Português Brasileiro',
-  'ro': 'Română',
-  'ru': 'Русский',
-  'sc': 'Sardu',
-  'sk': 'Slovenčina',
-  'sr': 'Српски',
+  // 'fr': 'Français',
+  // 'he': 'עברית',
+  // 'hrx': 'Hunsrik',
+  // 'hu': 'Magyar',
+  // 'ia': 'Interlingua',
+  // 'is': 'Íslenska',
+  // 'it': 'Italiano',
+  // 'ja': '日本語',
+  // 'kab': 'Kabyle',
+  // 'ko': '한국어',
+  // 'mk': 'Македонски',
+  // 'ms': 'Bahasa Melayu',
+  // 'nb': 'Norsk Bokmål',
+  // 'nl': 'Nederlands, Vlaams',
+  // 'oc': 'Lenga d\'òc',
+  // 'pl': 'Polski',
+  // 'pms': 'Piemontèis',
+  // 'pt-br': 'Português Brasileiro',
+  // 'ro': 'Română',
+  // 'ru': 'Русский',
+  // 'sc': 'Sardu',
+  // 'sk': 'Slovenčina',
+  // 'sr': 'Српски',
   'sv': 'Svenska',
-  'ta': 'தமிழ்',
-  'th': 'ภาษาไทย',
-  'tlh': 'tlhIngan Hol',
-  'tr': 'Türkçe',
-  'uk': 'Українська',
-  'vi': 'Tiếng Việt',
-  'zh-hans': '简体中文',
-  'zh-hant': '正體中文'
+  // 'ta': 'தமிழ்',
+  // 'th': 'ภาษาไทย',
+  // 'tlh': 'tlhIngan Hol',
+  // 'tr': 'Türkçe',
+  // 'uk': 'Українська',
+  // 'vi': 'Tiếng Việt',
+  // 'zh-hans': '简体中文',
+  // 'zh-hant': '正體中文'
 };
 
 /**
@@ -165,6 +165,7 @@ Code.loadBlocks = function(defaultXml) {
 Code.changeLanguage = function() {
   // Store the blocks for the duration of the reload.
   // MSIE 11 does not support sessionStorage on file:// URLs.
+  console.log('--a--');
   if (window.sessionStorage) {
     var xml = Blockly.Xml.workspaceToDom(Code.workspace);
     var text = Blockly.Xml.domToText(xml);
@@ -175,6 +176,7 @@ Code.changeLanguage = function() {
   var newLang = encodeURIComponent(
       languageMenu.options[languageMenu.selectedIndex].value);
   var search = window.location.search;
+  console.log(search);
   if (search.length <= 1) {
     search = '?lang=' + newLang;
   } else if (search.match(/[?&]lang=[^&]*/)) {
@@ -182,9 +184,10 @@ Code.changeLanguage = function() {
   } else {
     search = search.replace(/\?/, '?lang=' + newLang + '&');
   }
-
+  
   window.location = window.location.protocol + '//' +
-      window.location.host + window.location.pathname + search;
+  window.location.host + window.location.pathname + search;
+  console.log('--b--');
 };
 
 /**
@@ -214,7 +217,8 @@ Code.bindChange = function(el, func) {
  */
 Code.importPrettify = function() {
   var script = document.createElement('script');
-  script.setAttribute('src', 'https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js');
+  // script.setAttribute('src', 'https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js');
+  script.setAttribute('src', './prettify/run_prettify.js');
   document.head.appendChild(script);
 };
 
@@ -403,6 +407,11 @@ Code.init = function() {
           (Code.workspace.toolbox_.width - 38) + 'px';
           // Account for the 19 pixel margin and on each side.
     }
+
+    // OMA - estää sulkemasta palikkakategoriaa UI:ssa kun palikka otettu - checkbox UI:hin?
+    if (Code.workspace)
+      Code.workspace.toolbox_.flyout_.autoClose = false;
+
   };
   window.addEventListener('resize', onresize, false);
 
@@ -458,14 +467,12 @@ Code.init = function() {
   Code.bindClick('runButton', Code.runJS);
 
 
-// oma
+// Omien nappien sidonta
   Code.bindClick('saveButton', Code.saveXML);
   Code.bindClick('loadButton', Code.loadXML);
   Code.bindClick('saves', Code.loadSaves);
   Code.bindChange('saves', Code.selectSave);
-
-// oma
-  
+  // Code.bindClick('testButton', Code.testFlag);
   
   // Disable the link button if page isn't backed by App Engine storage.
   var linkButton = document.getElementById('linkButton');
@@ -538,10 +545,87 @@ Code.initLanguage = function() {
 };
 
 
-
-
+// ********** OMAT ALKAA **************************
 
 let robottikomennot = [];
+let ohjelma_suorituksessa = false;
+let tauko = false;
+
+const socket = io();
+
+socket.on('robottikomento', msg => {
+  if (msg == 'komento_valmis' && ohjelma_suorituksessa && !tauko)
+    emittoiSeuraavaKomento();
+    console.log(ohjelma_suorituksessa);
+});
+
+const emittoiSeuraavaKomento = () => {
+  if (!ohjelma_suorituksessa && tauko)
+    return;
+  let seuraava = robottikomennot.shift();
+  if (seuraava === undefined) {
+    socket.emit('robottikomento', 'loppu');
+    ohjelma_suorituksessa = false;
+    console.log('ohjelma loppu');
+  }
+  else {
+    socket.emit('robottikomento', seuraava);
+    console.log(seuraava);
+  }
+}
+
+// const emittoiTauko = () => {
+//   socket.emit('robottikomento', 'tauko');
+//   console.log('ohjelman suorituksessa tauko');
+// }
+
+// const emittoiStop = () => {  // ei pelkästää emittoi
+//   socket.emit('robottikomento', 'stop');
+//   console.log('ohjelma ajo lopetettu');
+// }
+
+
+
+/**
+ * Execute the user's code.
+ * Just a quick and dirty eval.  Catch infinite loops.
+ */
+Code.runJS = function() {
+  Blockly.JavaScript.INFINITE_LOOP_TRAP = '  checkTimeout();\n';
+  var timeouts = 0;
+  var checkTimeout = function() {
+    if (timeouts++ > 1000000) {
+      throw MSG['timeout'];
+    }
+  };
+  var code = Blockly.JavaScript.workspaceToCode(Code.workspace);
+  Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+  try {
+    // console.log(code);
+    eval(code);
+  } catch (e) {
+    alert(MSG['badCode'].replace('%1', e));
+  }
+  
+  ohjelma_suorituksessa = true;
+  let i = 1;
+  console.log('---------------------------------------------------------------------');
+  console.log("ohjelma käynnistetty");
+  
+
+  // tauhka 1
+};
+
+
+
+
+
+
+
+
+
+
+
 
 // oma
 Code.saveXML = function() {
@@ -605,59 +689,6 @@ Code.selectSave = () => {
 
 }
 
-
-Code.sendRobotCommandsToBackend = () => {
-
-  console.log(robottikomennot);
-  
-  let myBody = '{"komennot": "' + robottikomennot + '"}';
-  console.log(myBody);
-
-  const userAction = async () => {
-    const response = await fetch('http://localhost:' + PORT + '/api/postRobotCommands/', {
-      method: 'POST',
-      body: myBody, // string or object
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-  }
-
-  userAction();
-  
-}
-
-/**
- * Execute the user's code.
- * Just a quick and dirty eval.  Catch infinite loops.
- */
-Code.runJS = function() {
-  Blockly.JavaScript.INFINITE_LOOP_TRAP = '  checkTimeout();\n';
-  var timeouts = 0;
-  var checkTimeout = function() {
-    if (timeouts++ > 1000000) {
-      throw MSG['timeout'];
-    }
-  };
-  var code = Blockly.JavaScript.workspaceToCode(Code.workspace);
-  Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-  try {
-    // console.log(code);
-    eval(code);
-  } catch (e) {
-    alert(MSG['badCode'].replace('%1', e));
-  }
-
-  // Lähetetään robotin käskyt backendille
-  try {
-    Code.sendRobotCommandsToBackend();
-    robottikomennot = [];
-  } catch (e) {
-    alert(MSG['badCode'].replace('%1', e));
-  }
-
-};
-
 /**
  * Discard all blocks from the workspace.
  */
@@ -678,3 +709,119 @@ document.write('<script src="msg/' + Code.LANG + '.js"></script>\n');
 document.write('<script src="./google-blockly-9ab6273/msg/js/' + Code.LANG + '.js"></script>\n');
 
 window.addEventListener('load', Code.init);
+
+
+
+
+// ***** VANHAA TAUHKAA - luultavasti ei tarvita ******
+
+
+  // tauhka 1
+
+    // *** ei käytössä, koska siirryimme socket.io:hon
+    // try {
+    //   // Code.robotCommandLoop(); // uusi koe
+    //   // Code.sendRobotCommandsToBackend(); // vanha
+    //   // Code.socketTest(); // yhteyskoe
+    //   // robottikomennot = [];
+    // } catch (e) {
+    //   alert(MSG['badCode'].replace('%1', e));
+    // }
+
+
+
+  // tauhka 2
+    // const userAction = async () => {
+    //   const response = await fetch('http://localhost:3000/api/testFlag/');
+    //   const robot_command = await response.text();
+    //   console.log(robot_command);
+    // }
+    // userAction()
+
+
+// Code.sendRobotCommandsToBackend = () => {
+
+  //   console.log(robottikomennot);
+    
+  //   let myBody = '{"komennot": "' + robottikomennot + '"}';
+  //   console.log(myBody);
+  
+  //   const userAction = async () => {
+  //     const response = await fetch('http://localhost:' + PORT + '/api/postRobotCommands/', {
+  //       method: 'POST',
+  //       body: myBody, // string or object
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       }
+  //     });
+  //   }
+  
+  //   userAction();
+    
+      // }
+
+
+
+
+// Code.socket.on("flag", (data) => {
+//   socket.emit('robot_command', robottikomennot.shift());
+// });
+
+
+// Code.robotCommandLoop = () => {
+
+//   while (robottikomennot.length > 0) {
+
+//     socket.on("flag", (data) => {
+//       socket.emit('robot_command', robottikomennot.shift());
+//     });
+  
+//   }
+// }
+
+// Code.robotCommandLoop = () => {
+
+//   let can_continue = false;
+
+//   while (robottikomennot.length > 0) {
+
+//     socket.on("flag", (data) => {
+//       can_continue = true; 
+//     });
+  
+//     socket.emit('robot_command', robottikomennot.shift());
+  
+//   }
+
+// }
+
+// yhteyskoe
+// Code.socketTest = () => {
+//   socket.emit('robot_command', "robokomento tässä hei");
+// }
+
+
+
+
+
+// const runTestCommand = () => {
+
+//   if (robottikomennot.length > 0) {
+
+//     document.getElementById("testiemittori").hidden = false;
+//   } else {
+//     console.log("ohjelma loppu");    
+//     document.getElementById("testiemittori").hidden = true;
+
+//   }
+// }
+
+
+// // oma
+// Code.testFlag = () => {
+
+//   fetch('http://localhost:3000/api/testFlag/');
+
+//   // tauhka 2
+// }
+

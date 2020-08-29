@@ -28,8 +28,8 @@ button {
   color: #000;
 }
 button.primary {
-  border: 1px solid #dd4b39;
-  background-color: #dd4b39;
+  border: 1px solid #0cc033;
+  background-color: #0cc033;
   color: #fff;
 }
 button.primary>img {
@@ -161,4 +161,14 @@ button {
 }
 .run {
   background-position: -42px 0px;
+}
+#title {
+  padding: 1px 10px;
+  margin: 1px 5px;
+}
+#test {
+  font-size: larger;
+  padding: 1px 10px;
+  margin: 1px 5px;
+  background: #ea3;
 }
