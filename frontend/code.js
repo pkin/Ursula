@@ -469,13 +469,17 @@ Code.init = function() {
 
 // Omien nappien sidonta
   Code.bindClick('saveButton', Code.saveXML);
+  Code.bindClick('testLista', Code.lataaListaTallennetuista);
   // Code.bindClick('loadButton', Code.loadXML);
   // Code.bindClick('saves', Code.loadSaves);
   // Code.bindChange('saves', Code.selectSave);
   Code.bindClick('valikkoAuki', () => { document.getElementById("valikko").style.width = "100%"; });
   Code.bindClick('valikkoKiinni', () => { document.getElementById("valikko").style.width = "0%"; });
+  Code.bindClick('valikkoKiinni_2', () => { document.getElementById("lataus_valikko").style.width = "0%"; });
   // Code.bindClick('closeLoadOverlay', () => { document.getElementById('overlay').hidden = true });
-  
+  Code.lataaListaTallennetuista();
+
+
   // Disable the link button if page isn't backed by App Engine storage.
   var linkButton = document.getElementById('linkButton');
   if ('BlocklyStorage' in window) {
@@ -576,6 +580,22 @@ const emittoiSeuraavaKomento = () => {
   }
 }
 
+
+// Code.näytäTallennetutOhjelmat = () => {
+  
+//   Code.lataaListaTallennetuista();
+
+
+//   // console.log(ohjelmaluettelo);
+
+//   // document.getElementById("ohjelmalista").innerHTML = '<a href="#">dickbutt2</a>';
+
+  
+  
+//   // document.getElementById("lista_ohjelmista").value = lista_ohjelmista;
+// }
+
+{
 // const emittoiTauko = () => {
 //   socket.emit('robottikomento', 'tauko');
 //   console.log('ohjelman suorituksessa tauko');
@@ -633,20 +653,48 @@ Code.onkoLadattu = false;
 Code.onkoNimeäMuutettuLataamisenJälkeen = false;
 
 
+// tarkista onko ohjelman nimi jo tallennettu palvelimen tallennukset-hakemistoon
+Code.tarkistaTallennusNimi = nimi => {
+  const userAction = async () => {
+    const response = await fetch(`http://localhost:${PORT}/api/saveXML3/${id}`, {
+      method: 'POST',
+      body: myBody, // string or object
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  }
+  userAction()
+  return false;
+}
+
+
+// *** tästä tästä
+
 // oma
 Code.saveXML = function() {
 
   var xmlDom = Blockly.Xml.workspaceToDom(Code.workspace);
   var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
   let xml = xmlText;
+  let nimi = document.getElementById('saveName').value;
 
   xml = xml.replace(/"/g, "'");
   xml = xml.replace(/\n/g, " ");
 
-  const id = document.getElementById('saveName').value
+  nimi = nimi.replace(/"/g, "\\\"");
+  nimi = nimi.replace(/\n/g, " ");
 
-  let myBody = '{"xml":\"' + xml + '\"}'
-  // let myBody = '{"name":"' + filename + '", "xml":\"' + xml + '\"}'
+  // const id = new Date(Date.now()).toISOString();
+  const id = 123;
+  console.log(id);
+  // return;
+    
+  
+  // let myBody = '{"xml":\"' + xml + '\"}'
+
+  let myBody = `{"nimi":"${nimi}", "xml":"${xml}"}`;
+  // let myBody = '{"nimi:"' + nimi + '", "xml":\"' + xml + '\"}'
 
   const userAction = async () => {
     // const response = await fetch('http://localhost:/api/saveXML3/' + id, {
@@ -663,6 +711,45 @@ Code.saveXML = function() {
   userAction()
 
 };
+
+
+}
+
+// oma
+Code.lataaListaTallennetuista = () => {
+
+   const userAction = async () => {
+    const response = await fetch('http://localhost:3000/api/ohjelmat/');
+    const ohjelmat = await response.json();
+  
+    let ohjelmalista = "";
+
+    ohjelmat.sort( (a, b) => {return b["muokattu"] > a["muokattu"]} );
+
+
+    for (let o of ohjelmat) {
+      let options = {
+        year: 'numeric', month: 'numeric', day: 'numeric',
+        hour: 'numeric', minute: 'numeric', 
+        timeZone: 'Europe/Helsinki'
+      };
+        // const muokattu = o["muokattu"].replace("T", " ");
+        const muokattu = new Date(o["muokattu"]).toLocaleDateString('fi-FI', options);
+        // ohjelmalista += '<a href="#">' + o["nimi"] + '</a>';
+        ohjelmalista += `<a href="#">${o["nimi"]} - ${muokattu}</a>`;
+    }
+
+    document.getElementById("ohjelmalista").innerHTML = ohjelmalista;
+    document.getElementById("lataus_valikko").style.width = "100%"; 
+
+    // Code.workspace.clear();
+    // Code.loadBlocks(xml);
+  }
+
+  userAction();
+}
+
+
 
 // oma
 Code.loadXML = function() {

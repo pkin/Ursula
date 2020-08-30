@@ -1,5 +1,30 @@
 
 
+get http://localhost:3000/api/testFlag
+###
+
+get http://localhost:3000/api/XMLstorage
+###
+
+get http://localhost:3000/api/onkoTallennusJoOlemassa/XYZ
+###
+
+get http://localhost:3000/api/onkoTallennusJoOlemassa/XYZZ
+###
+
+get http://localhost:3000/api/ohjelmat
+###
+
+post http://localhost:3000/api/saveXML3/123
+Content-Type: application/json
+
+{
+    "nimi":"joo",
+    "xml": "<xml xmlns='http://www.w3.org/1999/xhtml'>"
+}
+
+
+
 
 get http://localhost:3000/api/testFlag
 ###

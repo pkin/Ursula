@@ -80,8 +80,19 @@ app.post('/api/saveXML3/:id', (req, res, next) => {
 
     const fs = require('fs');
     const filename = './tallennukset/' + req.params.id + '.xml';
+
+    // const tallennusString = `<nimi>${req.body.nimi}</nimi>\n${req.body.xml}`;
+    let tallennusString = [];
+    tallennusString.push(req.body.nimi);
+    tallennusString.push(req.body.xml);
+    tallennusString = JSON.stringify(tallennusString);
+
+    console.log(tallennusString);
+  
+
+    // `<nimi>${req.body.nimi}</nimi>${req.body.xml}`;
     
-    fs.writeFile(filename, req.body.xml, function (err) {
+    fs.writeFile(filename, tallennusString, function (err) {
         if (err) throw err;
             console.log('Saved!');
     });
@@ -95,25 +106,29 @@ app.get('/api/XMLstorage', (req, res) => {
     
     const fs = require('fs');
     const filename = 'temp_xml_tallennus.txt'
-    res.writeHead(200, {'Content-Type': 'text/xml'});
-    // res.write('<html>\n<body>\n');
+    res.writeHead(200, {'Content-Type': 'text/xml'});  // xml, not html
+    res.write('<x>\n');
     res.write("dickbutt");
-    // res.write('</body>\n</html>');
-    res.end();
-    // console.log(req)
-    // fs.readFile(filename, (err, data) => {
-    //     if (err) {
-    //         return console.log(err);
-    //     }
-    //     res.writeHead(200, {'Content-Type': 'text/xml'});
-    //     // res.write('<html>\n<body>\n');
-    //     res.write(data);
-    //     // res.write('</body>\n</html>');
-    //     res.end();
-    //}); 
+    res.write('\n</x>');
+    res.end(); 
 
 });
 
+app.get('/api/ohjelmat', (req, res) => {
+    
+    const fs = require('fs');
+    const hakemisto = './tallennukset/';
+    const ohjelmat = [];
+
+    fs.readdirSync(hakemisto).forEach(file => {
+        let tiedostonimi = file.replace(".xml", "");
+        let muokkausaika = fs.statSync(hakemisto + "/" + file).mtime;
+        ohjelmat.push( {nimi: tiedostonimi, muokattu: muokkausaika } );
+        console.log(ohjelmat);
+    });
+
+    return res.status(200).json(ohjelmat);
+})
 
 
 const PORT = process.env.PORT || 3000
