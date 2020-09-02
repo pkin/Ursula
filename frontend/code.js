@@ -468,7 +468,7 @@ Code.init = function() {
 
 
 // Omien nappien sidonta
-  Code.bindClick('saveButton', Code.saveXML);
+  Code.bindClick('saveButton', () => Code.saveXML(Code.ohjelmanID));
   Code.bindClick('testLista', Code.lataaListaTallennetuista);
   // Code.bindClick('loadButton', Code.loadXML);
   // Code.bindClick('saves', Code.loadSaves);
@@ -554,15 +554,17 @@ Code.initLanguage = function() {
 // ********** OMAT ALKAA **************************
 
 let robottikomennot = [];
-let ohjelma_suorituksessa = false;
+let ohjelma_suorituksessa = false; 
 let tauko = false;
 
 const socket = io();
 
 socket.on('robottikomento', msg => {
-  if (msg == 'komento_valmis' && ohjelma_suorituksessa && !tauko)
+  // if kommnetoitu pois testin vuoksi
+  // if (msg == 'komento_valmis' && ohjelma_suorituksessa && !tauko)
+    console.log("komento_valmis viesti saatu Nodesta");
     emittoiSeuraavaKomento();
-    console.log(ohjelma_suorituksessa);
+    // console.log(ohjelma_suorituksessa);
 });
 
 const emittoiSeuraavaKomento = () => {
@@ -578,6 +580,16 @@ const emittoiSeuraavaKomento = () => {
     socket.emit('robottikomento', seuraava);
     console.log(seuraava);
   }
+}
+
+Code.tarkistaTallennusNimi = nimi => {
+
+  socket.emit('getCounter', nimi, function(error, counter) {
+    console.log('Counter is', counter);
+  });
+
+  // socket.emit('tarkista_nimi', 'do you think so?', function (answer) {});
+  // console.log(answer);
 }
 
 
@@ -631,7 +643,7 @@ Code.runJS = function() {
   
   ohjelma_suorituksessa = true;
   let i = 1;
-  console.log('---------------------------------------------------------------------');
+  console.log('*****');
   console.log("ohjelma käynnistetty");
   
 
@@ -651,28 +663,51 @@ Code.PORT = 3000;
 Code.ohjelmanNimiSamaKuinLadattaessa = true;
 Code.onkoLadattu = false;
 Code.onkoNimeäMuutettuLataamisenJälkeen = false;
+Code.ohjelmanID = 1234567;
 
 
+// Code.tarkistaTallennusNimi = nimi => {
+  //   const userAction = async () => {
+    //     const response = await fetch(`http://localhost:${PORT}/api/saveXML3/${id}`, {
+      //       method: 'POST',
+      //       body: myBody, // string or object
+      //       headers: {
+        //         'Content-Type': 'application/json'
+        //       }
+        //     });
+        //   }
+        //   userAction()
+        //   return false;
+        // }
+        
 // tarkista onko ohjelman nimi jo tallennettu palvelimen tallennukset-hakemistoon
-Code.tarkistaTallennusNimi = nimi => {
-  const userAction = async () => {
-    const response = await fetch(`http://localhost:${PORT}/api/saveXML3/${id}`, {
-      method: 'POST',
-      body: myBody, // string or object
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-  }
-  userAction()
-  return false;
-}
+// Code.tarkistaTallennusNimi = nimi => {
+//   const userAction = async () => {
+//     const response = await fetch('http://localhost:3000/api/tarkista/' + nimi);
+//     const olemassa = await response.text();
+//   }
+//   userAction();  
+// }
+
 
 
 // *** tästä tästä
 
 // oma
-Code.saveXML = function() {
+Code.saveXML = id => {
+
+  if (false) {
+    if (id === 0) {
+      // ohjelma on uusi --> id = get uusi id + 1
+      // id = 
+    }
+
+    const nnimi = document.getElementById('saveName').value;
+    // console.log(Code.tarkistaTallennusNimi(nnimi));
+    Code.tarkistaTallennusNimi(nnimi);
+    console.log('-----');
+    return;
+  }
 
   var xmlDom = Blockly.Xml.workspaceToDom(Code.workspace);
   var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
@@ -685,20 +720,9 @@ Code.saveXML = function() {
   nimi = nimi.replace(/"/g, "\\\"");
   nimi = nimi.replace(/\n/g, " ");
 
-  // const id = new Date(Date.now()).toISOString();
-  const id = 123;
-  console.log(id);
-  // return;
-    
-  
-  // let myBody = '{"xml":\"' + xml + '\"}'
-
   let myBody = `{"nimi":"${nimi}", "xml":"${xml}"}`;
-  // let myBody = '{"nimi:"' + nimi + '", "xml":\"' + xml + '\"}'
 
   const userAction = async () => {
-    // const response = await fetch('http://localhost:/api/saveXML3/' + id, {
-    // const response = await fetch('http://localhost:' + PORT + '/api/saveXML3/' + id, {
     const response = await fetch(`http://localhost:${PORT}/api/saveXML3/${id}`, {
       method: 'POST',
       body: myBody, // string or object
@@ -707,9 +731,7 @@ Code.saveXML = function() {
       }
     });
   }
-
   userAction()
-
 };
 
 
@@ -740,7 +762,7 @@ Code.lataaListaTallennetuista = () => {
     }
 
     document.getElementById("ohjelmalista").innerHTML = ohjelmalista;
-    document.getElementById("lataus_valikko").style.width = "100%"; 
+    // document.getElementById("lataus_valikko").style.width = "100%"; 
 
     // Code.workspace.clear();
     // Code.loadBlocks(xml);

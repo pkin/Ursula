@@ -1,5 +1,87 @@
 
 
+
+
+get http://localhost:3000/api/testFlag
+###
+
+
+
+
+
+
+
+
+
+get http://localhost:3000/api/tarkista/12342
+###
+
+get http://localhost:3000/api/onkoTallennusJoOlemassa/XYZ
+###
+
+get http://localhost:3000/api/onkoTallennusJoOlemassa/XYZZ
+###
+
+get http://localhost:3000/api/ohjelmat
+###
+
+post http://localhost:3000/api/saveXML3/1234
+Content-Type: application/json
+
+{
+    "ni\"mi":"joo",
+    "xml": "<xml xmlns='http://www.w3.org/1999/xhtml'>"
+}
+
+
+###
+
+
+
+
+get http://localhost:3000
+
+
+###
+
+get http://localhost:3000/api/nextCommand
+
+
+
+###
+
+
+
+post http://localhost:3000/api/saveXML
+Content-Type: application/json
+
+{
+    "test1": "123",
+    "test2": "456"
+}
+
+###
+
+
+post http://localhost:3000/savetest
+Content-Type: application/json
+
+{
+    "test1": "123",
+    "test2": "456"
+}
+
+###
+
+###
+get http://localhost:3000/savetest
+
+###
+
+
+
+########################################################################33
+
 get http://localhost:3000/api/testFlag
 ###
 

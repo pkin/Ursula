@@ -24,34 +24,80 @@ app.get('/api/showRobotCommands', (req, res) => {
 
 app.get('/api/testFlag', (req, res) => {
     io.emit("robottikomento", "komento_valmis");
-    res.send("ok"); 
+    res.send("ok");
 });
 
 // app.get('/api/nextCommand', (req, res) => {
 //     res.send(giveNextRobotCommand());
 // });
 
-// let giveNextRobotCommand = () => {   
+// let giveNextRobotCommand = () => {
 //     return robotin_komennot.shift();
 // }
 
+// testi counter
+let counter = 1;
+
 io.on('connection', (socket) => {
-    
+
     console.log('a user connected');
-    
+
     socket.on('disconnect', () => {
         console.log('user disconnected');
     });
-    
+
     socket.on('robottikomento', (data) => {
         console.log(data);
     });
-    
+
+
+    // koe
+
+    socket.on('getCounter', (nimi, callback) => {
+        console.log(`Returning getCounter with counter ${counter} and the nimi is ${nimi}`);
+        // Use a Node style callback (error, value)
+        // callback(null, ++counter + " " + nimi);
+        callback(null, onkoNimiTallennetuissa(nimi));
+    });
+
+    socket.on('tarkista_nimi', (nimi, callback) => {
+
+        callback(null, onkoNimiTallennetuissa(nimi));
+    });
+
 });
+
+const onkoNimiTallennetuissa = nimi => {
+
+    const fs = require('fs');
+    const hakemisto = './tallennukset/';
+    
+    const olemassa = fs.readdirSync(hakemisto).some( (element, index) => {
+        let data = fs.readFileSync(hakemisto + "/" + element);
+        if (nimi === JSON.parse(data)[0])
+            return true;
+        else
+            return false;
+    });
+
+    return olemassa;
+
+    // Tämä toimii myös:
+    // let olemassa = false;
+    // for (let file of fs.readdirSync(hakemisto)) {
+    //     let data = fs.readFileSync(hakemisto + file);
+    //     console.log(nimi, JSON.parse(data)[0], nimi === JSON.parse(data)[0] );
+    //     if (nimi === JSON.parse(data)[0]) {
+    //         olemassa = true;
+    //         break;
+    //     };
+    // };
+
+}
 
 
 app.get('/api/onkoTallennusJoOlemassa/:id', (req, res) => {
-    
+
     const fs = require('fs');
     const filename = './tallennukset/' + req.params.id + '.xml';
 
@@ -66,32 +112,30 @@ app.get('/api/onkoTallennusJoOlemassa/:id', (req, res) => {
             res.writeHead(200, {'Content-Type': 'text/xml'});
             res.write("löytyy");
             res.end();
-        } 
+        }
         // else {
         //     res.writeHead(200, {'Content-Type': 'text/xml'});
         //     res.write("ei löydy");
         //     res.end();
         // }
-    }); 
+    });
 
 })
 
 app.post('/api/saveXML3/:id', (req, res, next) => {
 
     const fs = require('fs');
-    const filename = './tallennukset/' + req.params.id + '.xml';
+    const filename = './tallennukset/' + req.params.id + '.json';
 
-    // const tallennusString = `<nimi>${req.body.nimi}</nimi>\n${req.body.xml}`;
-    let tallennusString = [];
-    tallennusString.push(req.body.nimi);
-    tallennusString.push(req.body.xml);
-    tallennusString = JSON.stringify(tallennusString);
-
-    console.log(tallennusString);
-  
-
-    // `<nimi>${req.body.nimi}</nimi>${req.body.xml}`;
+    let tallennusString = [req.body.nimi, req.body.xml];
     
+    
+    // tallennusString.push(req.body.nimi);
+    // tallennusString.push(req.body.xml);
+    tallennusString = JSON.stringify(tallennusString);
+    console.log("---" , tallennusString);
+
+
     fs.writeFile(filename, tallennusString, function (err) {
         if (err) throw err;
             console.log('Saved!');
@@ -102,20 +146,19 @@ app.post('/api/saveXML3/:id', (req, res, next) => {
 
 
 
-app.get('/api/XMLstorage', (req, res) => {
-    
-    const fs = require('fs');
-    const filename = 'temp_xml_tallennus.txt'
+app.get('/api/tarkista/:id', (req, res) => {
+
+
+    // const fs = require('fs');
+    // const filename = 'temp_xml_tallennus.txt'
     res.writeHead(200, {'Content-Type': 'text/xml'});  // xml, not html
-    res.write('<x>\n');
-    res.write("dickbutt");
-    res.write('\n</x>');
-    res.end(); 
+    res.write("true");
+    res.end();
 
 });
 
 app.get('/api/ohjelmat', (req, res) => {
-    
+
     const fs = require('fs');
     const hakemisto = './tallennukset/';
     const ohjelmat = [];

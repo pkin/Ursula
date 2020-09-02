@@ -177,7 +177,7 @@ button {
 
 .overlay {
   height: 100%;
-  width: 100%;
+  width: 0%;
   position: fixed;
   z-index: 222;
   top: 0;
