@@ -555,7 +555,7 @@ Code.initLanguage = function() {
 
 let robottikomennot = [];
 let ohjelma_suorituksessa = false; 
-let tauko = false;
+// let tauko = false;
 
 const socket = io();
 
@@ -568,9 +568,10 @@ socket.on('robottikomento', msg => {
 });
 
 const emittoiSeuraavaKomento = () => {
-  if (!ohjelma_suorituksessa && tauko)
-    return;
+  // if (!ohjelma_suorituksessa && tauko)
+  //   return;
   let seuraava = robottikomennot.shift();
+  console.log(seuraava);
   if (seuraava === undefined) {
     socket.emit('robottikomento', 'loppu');
     ohjelma_suorituksessa = false;
@@ -578,7 +579,6 @@ const emittoiSeuraavaKomento = () => {
   }
   else {
     socket.emit('robottikomento', seuraava);
-    console.log(seuraava);
   }
 }
 
@@ -643,8 +643,7 @@ Code.runJS = function() {
   
   ohjelma_suorituksessa = true;
   let i = 1;
-  console.log('*****');
-  console.log("ohjelma käynnistetty");
+  console.log("*** ohjelma käynnistetty ***");
   
 
   // tauhka 1
