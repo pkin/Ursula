@@ -1,8 +1,156 @@
 
+///// Uudet 2020-08-31 11.06:
+
+Blockly.Blocks['relative_move'] = {
+  init: function() {
+    this.appendDummyInput()
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Liiku ")
+      .appendField(new Blockly.FieldDropdown([
+        ['eteenpäin', 'forward'],
+        ['taaksepäin', 'backward']
+      ]), 'move_direction')
+      .appendField(" ");
+    this.appendValueInput("move_angle")
+      .setCheck("Number");
+    this.appendDummyInput()
+      .appendField("° kulmassa ");
+    this.appendValueInput("move_distance")
+      .setCheck("Number");
+    this.appendDummyInput()
+      .appendField(" cm");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(212);
+    this.setTooltip("");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.JavaScript['relative_move'] = block => {
+  const socket_event_name = "relative_move";
+  const socket_emit_object = {
+    move_direction: block.getFieldValue('move_direction'),
+    move_angle: Blockly.JavaScript.valueToCode(block, 'move_angle', Blockly.JavaScript.ORDER_ATOMIC),
+    move_distance: Blockly.JavaScript.valueToCode(block, 'move_distance', Blockly.JavaScript.ORDER_ATOMIC)
+  };
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+};
+
+Blockly.Blocks['turn'] = {
+  init: function() {
+    this.appendDummyInput()
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Käänny ")
+      .appendField(new Blockly.FieldDropdown([
+        ['oikealle', 'right'],
+        ['vasemmalle', 'left']
+      ]), 'turn_direction')
+      .appendField(" ");
+    this.appendValueInput("turn_angle")
+      .setCheck("Number");
+    this.appendDummyInput()
+      .appendField("astetta");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(212);
+    this.setTooltip("");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.JavaScript['turn'] = block => {
+  const socket_event_name = "turn";
+  const socket_emit_object = {
+    move_direction: block.getFieldValue('turn_direction'),
+    move_angle: Blockly.JavaScript.valueToCode(block, 'turn_angle', Blockly.JavaScript.ORDER_ATOMIC)
+  };
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+};
+
+Blockly.Blocks['pick_ball'] = {
+  init: function() {
+    this.appendDummyInput()
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Poimi  ")
+      .appendField(new Blockly.FieldDropdown([
+        ['oikealla', 'right'],
+        ['vasemmalla', 'left']
+      ]), 'pick_ball_hand')
+      .appendField(" kädellä ");
+      let field = new Blockly.FieldColour('#ff4040');
+      field.setColours(
+          ['#ff4040', '#40ff40', '#4040ff'],
+          ['red', 'green', 'blue']);
+      field.setColumns(3);
+      this.appendDummyInput()
+      .appendField(field, 'COLOUR')
+      .appendField(' pallo');
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(212);
+    this.setTooltip("");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.JavaScript['pick_ball'] = block => {
+
+  let ball_colour = "";
+  switch (block.getFieldValue('COLOUR')) {
+    case '#ff4040': ball_colour = "red"; break;
+    case '#40ff40': ball_colour = "green"; break;
+    case '#4040ff': ball_colour = "blue"; break;
+  }
+
+  const socket_event_name = "pick_ball";
+  const socket_emit_object = {
+    hand: block.getFieldValue('pick_ball_hand'),
+    ball_color: ball_colour 
+  };
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+};
+
+Blockly.Blocks['example_colour'] = {
+  init: function() {
+    var field = new Blockly.FieldColour('#ff4040');
+    field.setColours(
+        ['#ff4040', '#ff8080', '#ffc0c0',
+        '#4040ff', '#8080ff', '#c0c0ff'],
+        ['dark pink', 'pink', 'light pink',
+        'dark blue', 'blue', 'light blue']);
+    field.setColumns(3);
+    this.appendDummyInput()
+        .appendField('colour:')
+        .appendField(field, 'COLOUR');
+  }
+};
+
+
+
+
+
+
+
+
 Blockly.FieldAngle.CLOCKWISE = true;
 Blockly.FieldAngle.OFFSET = 90;
 Blockly.FieldAngle.WRAP = (-180, 180);
 // Blockly.FieldAngle.ROUND = 5;
+
+
+
+
+
+
+
+
+
+// ###################
+
 
 
 
@@ -33,7 +181,7 @@ Blockly.JavaScript['liiku_1'] = function(block) {
   const määrä = Blockly.JavaScript.valueToCode(block, 'määrä', Blockly.JavaScript.ORDER_ATOMIC);
   var dropdown_name = block.getFieldValue('NAME');
   console.log(määrä);
-  // return 'var socket = io.connect('+ value_ip +'); \n';
+    // return 'var socket = io.connect('+ value_ip +'); \n';
   return ";";
 };
 

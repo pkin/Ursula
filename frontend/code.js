@@ -467,16 +467,23 @@ Code.init = function() {
   Code.bindClick('runButton', Code.runJS);
 
 
-// Omien nappien sidonta
+// Omien nappien sidonta - button bindings
   Code.bindClick('saveButton', () => Code.saveXML(Code.ohjelmanID));
   Code.bindClick('testLista', Code.lataaListaTallennetuista);
-  // Code.bindClick('loadButton', Code.loadXML);
-  // Code.bindClick('saves', Code.loadSaves);
-  // Code.bindChange('saves', Code.selectSave);
   Code.bindClick('valikkoAuki', () => { document.getElementById("valikko").style.width = "100%"; });
   Code.bindClick('valikkoKiinni', () => { document.getElementById("valikko").style.width = "0%"; });
   Code.bindClick('valikkoKiinni_2', () => { document.getElementById("lataus_valikko").style.width = "0%"; });
+  // Code.bindClick('donetestinappi', () => { console.log(Date.now() + " done"); emitDone(); } );
+  // Code.bindClick('donetestinappi', () => { console.log(Date.now() + " done");  } );
+  Code.bindClick('donetestinappi', () => { socket.emit("ask_for_done"); } );
+  // Code.bindClick('donetestinappi',  socket.emit("done")  );
+  // Code.bindClick('loadButton', Code.loadXML);
+  // Code.bindClick('saves', Code.loadSaves);
+  // Code.bindChange('saves', Code.selectSave);
+  
   // Code.bindClick('closeLoadOverlay', () => { document.getElementById('overlay').hidden = true });
+  
+  
   Code.lataaListaTallennetuista();
 
 
@@ -553,12 +560,55 @@ Code.initLanguage = function() {
 
 // ********** OMAT ALKAA **************************
 
-let robottikomennot = [];
-let ohjelma_suorituksessa = false; 
+const robottikomennot = [];
+let ohjelma_suorituksessa = false;
 // let tauko = false;
 
 const socket = io();
 
+socket.on("done", msg => {
+  console.log('Saatiin "done" palvelimelta');
+  emittoiSeuraavaKomento();
+});
+
+
+const emittoiSeuraavaKomento = () => {
+  let socket_event_name = robottikomennot.shift();
+  let socket_emit_object = robottikomennot.shift();
+  
+  if (!socket_event_name && !socket_emit_object) {
+    socket.emit("finished");
+    ohjelma_suorituksessa ? console.log('Ohjelman suoritus loppui!') : console.log('Ohjelman ei ole käynnissä.') ;
+    ohjelma_suorituksessa = false;
+    robottikomennot.length = 0;
+  }
+  else if (ohjelma_suorituksessa) {
+    socket.emit(socket_event_name, socket_emit_object);
+    console.log(socket_event_name, socket_emit_object);
+  }
+
+  // if (!ohjelma_suorituksessa && tauko)
+  //   return;
+  // let seuraava = robottikomennot.shift();
+ 
+  // if (seuraava === undefined) {
+  // if (!seuraava) {
+  //   socket.emit('robottikomento', 'loppu');
+  //   ohjelma_suorituksessa = false;
+  //   console.log('ohjelma loppu');
+  // }
+  // else {
+  //   console.log(seuraava);
+  //   socket.emit(seuraava[0], seuraava[1]);
+    // seuraava();
+    // const komento = seuraava.split(",");
+    // console.log(komento);
+    // console.log(komento[0], komento[1]);
+    // socket.emit(komento[0], komento[1], "hoihoi" );
+  // }
+}
+
+//  tämä on 'robottikomento' on testaukseen
 socket.on('robottikomento', msg => {
   // if kommnetoitu pois testin vuoksi
   // if (msg == 'komento_valmis' && ohjelma_suorituksessa && !tauko)
@@ -567,20 +617,6 @@ socket.on('robottikomento', msg => {
     // console.log(ohjelma_suorituksessa);
 });
 
-const emittoiSeuraavaKomento = () => {
-  // if (!ohjelma_suorituksessa && tauko)
-  //   return;
-  let seuraava = robottikomennot.shift();
-  console.log(seuraava);
-  if (seuraava === undefined) {
-    socket.emit('robottikomento', 'loppu');
-    ohjelma_suorituksessa = false;
-    console.log('ohjelma loppu');
-  }
-  else {
-    socket.emit('robottikomento', seuraava);
-  }
-}
 
 Code.tarkistaTallennusNimi = nimi => {
 
@@ -619,7 +655,6 @@ Code.tarkistaTallennusNimi = nimi => {
 // }
 
 
-
 /**
  * Execute the user's code.
  * Just a quick and dirty eval.  Catch infinite loops.
@@ -635,16 +670,15 @@ Code.runJS = function() {
   var code = Blockly.JavaScript.workspaceToCode(Code.workspace);
   Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
   try {
-    // console.log(code);
+    robottikomennot.length = 0;
     eval(code);
   } catch (e) {
     alert(MSG['badCode'].replace('%1', e));
   }
   
   ohjelma_suorituksessa = true;
-  let i = 1;
   console.log("*** ohjelma käynnistetty ***");
-  
+  emittoiSeuraavaKomento();
 
   // tauhka 1
 };

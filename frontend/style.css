@@ -237,3 +237,10 @@ button {
 #lataus_valikko {
   z-index: 223;
 }
+
+#donetestinappi {
+  padding: 5px 15px;
+  margin: 2px;
+  border: 1px green solid;
+  background-color: lightgreen;
+}

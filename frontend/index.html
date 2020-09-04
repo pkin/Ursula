@@ -36,6 +36,8 @@
     <tr>
       <td>
         <span class="valikkopainike" id="valikkoAuki">&#9776; Valikko</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button id="donetestinappi">Pyydä "done"</button>
       </td>
       <td>
 
@@ -66,7 +68,6 @@
             <a id="testLista" href="#">Listaa ohjelmat</a>
             <a href="#">Lataa</a>
             <a href="#">Tiedot</a>
-            <a href="#">Info</a>
           </div>
         </div>
       </td>
@@ -445,6 +446,42 @@
       <block type="robot_start"></block>
     </category> -->
     <category name="Robotti" colour="%{BKY_LOOPS_HUE}" expanded="true">
+      <block type="relative_move">
+        <value name="move_angle">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="move_distance">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>     
+      <block type="turn">
+        <value name="turn_angle">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>     
+      <block type="pick_ball">
+        <value name="turn_angle">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>     
+    </category>
+    
+    <category name="Testipalikat" colour="%{BKY_LOOPS_HUE}" expanded="false">
+      <block type="example_colour">
+        <value name="turn_angle">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>     
       <!-- <block type="robot_start"></block> -->
       
       <block type="liiku_1">

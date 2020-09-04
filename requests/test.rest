@@ -1,16 +1,14 @@
 
 
+get http://localhost:3000/api/testDone
+
+
+####
+
 
 
 get http://localhost:3000/api/testFlag
 ###
-
-
-
-
-
-
-
 
 
 get http://localhost:3000/api/tarkista/12342
