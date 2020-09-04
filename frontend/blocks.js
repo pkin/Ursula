@@ -114,27 +114,61 @@ Blockly.JavaScript['pick_ball'] = block => {
   return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
 };
 
-Blockly.Blocks['example_colour'] = {
+Blockly.Blocks['tts'] = {
   init: function() {
-    var field = new Blockly.FieldColour('#ff4040');
-    field.setColours(
-        ['#ff4040', '#ff8080', '#ffc0c0',
-        '#4040ff', '#8080ff', '#c0c0ff'],
-        ['dark pink', 'pink', 'light pink',
-        'dark blue', 'blue', 'light blue']);
-    field.setColumns(3);
-    this.appendDummyInput()
-        .appendField('colour:')
-        .appendField(field, 'COLOUR');
+    this.appendValueInput('text')
+      .setCheck(['String', 'Number'])
+      .appendField("Puhu ")
+      .appendField(new Blockly.FieldDropdown([
+        ['suomeksi', 'fi'],
+        ['ruotsiksi', 'se'],
+        ['englanniksi', 'en']
+      ]), 'kieli')
+      .appendField(' ')
+      .setAlign(Blockly.ALIGN_RIGHT);
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(212);
+    this.setTooltip("");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.JavaScript['tts'] = block => {
+
+  const socket_event_name = "text";
+  const socket_emit_object = {
+    language: block.getFieldValue('kieli'),
+    text: Blockly.JavaScript.valueToCode(block, 'text', Blockly.JavaScript.ORDER_NONE) || '\'\''
+  };
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+};
+
+
+Blockly.Blocks['tts2'] = {
+  /**
+   * Block for trimming spaces.
+   * @this {Blockly.Block}
+   */
+  init: function() {
+    var OPERATORS = [
+      [Blockly.Msg['TEXT_TRIM_OPERATOR_BOTH'], 'BOTH'],
+      [Blockly.Msg['TEXT_TRIM_OPERATOR_LEFT'], 'LEFT'],
+      [Blockly.Msg['TEXT_TRIM_OPERATOR_RIGHT'], 'RIGHT']
+    ];
+    this.setHelpUrl(Blockly.Msg['TEXT_TRIM_HELPURL']);
+    this.setStyle('text_blocks');
+    this.appendValueInput('TEXT')
+        .setCheck('String')
+        .appendField(new Blockly.FieldDropdown(OPERATORS), 'MODE');
+    this.setOutput(true, 'String');
+    this.setTooltip(Blockly.Msg['TEXT_TRIM_TOOLTIP']);
   }
 };
 
 
-
-
-
-
-
+// ** // ** //
 
 Blockly.FieldAngle.CLOCKWISE = true;
 Blockly.FieldAngle.OFFSET = 90;

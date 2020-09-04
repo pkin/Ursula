@@ -27,13 +27,18 @@ io.on('connection', (socket) => {
         console.log('user disconnected');
     });
 
-    socket.on('finished', data => { console.log('received: "finished" ', data ? data : ""); });
-    socket.on('relative_move', data => { console.log('received: "relative_move",', data); });
-    socket.on('turn', data => { console.log('received: "turn",', data); });
-    socket.on('pick_ball', data => { console.log('received: "pick_ball",', data); });
+    socket.on('finished', data => { console.log("received: 'finished' ", data ? data : ''); });
+
+    socket.on('relative_move', data => { console.log("received: 'relative_move',", data); });
+
+    socket.on('turn', data => { console.log("received: 'turn',", data); });
+    
+    socket.on('pick_ball', data => { console.log("received: 'pick_ball',", data); });
+
+    socket.on('text', data => { console.log("received: 'text',", data); });
     
     socket.on('ask_for_done', () => {
-        console.log('received: "ask_for_done" (testing), emitting \"done\"...');
+        console.log("received: 'ask_for_done' (testing), emitting 'done'...");
         socket.emit('done');
     });
 
