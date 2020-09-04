@@ -18,7 +18,7 @@ Blockly.Blocks['relative_move'] = {
     this.appendValueInput("move_distance")
       .setCheck("Number");
     this.appendDummyInput()
-      .appendField(" cm");
+      .appendField("cm");
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -33,7 +33,7 @@ Blockly.JavaScript['relative_move'] = block => {
   const socket_emit_object = {
     move_direction: block.getFieldValue('move_direction'),
     move_angle: Blockly.JavaScript.valueToCode(block, 'move_angle', Blockly.JavaScript.ORDER_ATOMIC),
-    move_distance: Blockly.JavaScript.valueToCode(block, 'move_distance', Blockly.JavaScript.ORDER_ATOMIC)
+    move_distance: 10 * Blockly.JavaScript.valueToCode(block, 'move_distance', Blockly.JavaScript.ORDER_ATOMIC)
   };
   return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
 };
@@ -123,7 +123,7 @@ Blockly.Blocks['tts'] = {
         ['suomeksi', 'fi'],
         ['ruotsiksi', 'se'],
         ['englanniksi', 'en']
-      ]), 'kieli')
+      ]), 'language')
       .appendField(' ')
       .setAlign(Blockly.ALIGN_RIGHT);
     this.setInputsInline(false);
@@ -139,8 +139,44 @@ Blockly.JavaScript['tts'] = block => {
 
   const socket_event_name = "text";
   const socket_emit_object = {
-    language: block.getFieldValue('kieli'),
+    language: block.getFieldValue('language'),
     text: Blockly.JavaScript.valueToCode(block, 'text', Blockly.JavaScript.ORDER_NONE) || '\'\''
+  };
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+};
+
+Blockly.Blocks['face'] = {
+  init: function() {
+    this.appendValueInput('duration')
+      .setCheck('Number')
+      .appendField("Näytä ")
+      .appendField(new Blockly.FieldDropdown([
+        ['iloinen', 'happy'],
+        ['vihainen', 'angry'],
+        ['surullinen', 'sad'],
+        ['hämmentynyt', 'confused'],
+        ['keskittynyt', 'focused']
+      ]), 'expression')
+      .appendField('ilme')
+      .setAlign(Blockly.ALIGN_RIGHT);
+    this.appendDummyInput()
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("sekuntia");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(212);
+    this.setTooltip("");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.JavaScript['face'] = block => {
+
+  const socket_event_name = "face";
+  const socket_emit_object = {
+    type: block.getFieldValue('expression'),
+    duration: Blockly.JavaScript.valueToCode(block, 'duration', Blockly.JavaScript.ORDER_ATOMIC)
   };
   return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
 };
