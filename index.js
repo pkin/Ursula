@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
 
     socket.on('turn', data => { console.log("received: 'turn',", data); });
     
-    socket.on('pick_ball', data => { console.log("received: 'pick_ball',", data); });
+    socket.on('pick_up_color_ball', data => { console.log("received: 'pick_up_color_ball',", data); });
 
     socket.on('text', data => { console.log("received: 'text',", data); });
 

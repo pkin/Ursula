@@ -35,7 +35,7 @@ Blockly.JavaScript['relative_move'] = block => {
     move_angle: Blockly.JavaScript.valueToCode(block, 'move_angle', Blockly.JavaScript.ORDER_ATOMIC),
     move_distance: 10 * Blockly.JavaScript.valueToCode(block, 'move_distance', Blockly.JavaScript.ORDER_ATOMIC)
   };
-  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
 
 Blockly.Blocks['turn'] = {
@@ -67,10 +67,10 @@ Blockly.JavaScript['turn'] = block => {
     move_direction: block.getFieldValue('turn_direction'),
     move_angle: Blockly.JavaScript.valueToCode(block, 'turn_angle', Blockly.JavaScript.ORDER_ATOMIC)
   };
-  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
 
-Blockly.Blocks['pick_ball'] = {
+Blockly.Blocks['pick_up_color_ball'] = {
   init: function() {
     this.appendDummyInput()
       .setAlign(Blockly.ALIGN_RIGHT)
@@ -98,7 +98,7 @@ Blockly.Blocks['pick_ball'] = {
   }
 };
 
-Blockly.JavaScript['pick_ball'] = block => {
+Blockly.JavaScript['pick_up_color_ball'] = block => {
 
   let ball_colour = "";
   switch (block.getFieldValue('COLOUR')) {
@@ -107,12 +107,12 @@ Blockly.JavaScript['pick_ball'] = block => {
     case '#4040ff': ball_colour = "blue"; break;
   }
 
-  const socket_event_name = "pick_ball";
+  const socket_event_name = "pick_up_color_ball";
   const socket_emit_object = {
     hand: block.getFieldValue('pick_ball_hand'),
     ball_color: ball_colour 
   };
-  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
 
 Blockly.Blocks['tts'] = {
@@ -143,7 +143,7 @@ Blockly.JavaScript['tts'] = block => {
     language: block.getFieldValue('language'),
     text: Blockly.JavaScript.valueToCode(block, 'text', Blockly.JavaScript.ORDER_NONE) || '\'\''
   };
-  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
 
 Blockly.Blocks['face'] = {
@@ -179,30 +179,10 @@ Blockly.JavaScript['face'] = block => {
     type: block.getFieldValue('expression'),
     duration: Blockly.JavaScript.valueToCode(block, 'duration', Blockly.JavaScript.ORDER_ATOMIC)
   };
-  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
 
 
-Blockly.Blocks['tts2'] = {
-  /**
-   * Block for trimming spaces.
-   * @this {Blockly.Block}
-   */
-  init: function() {
-    var OPERATORS = [
-      [Blockly.Msg['TEXT_TRIM_OPERATOR_BOTH'], 'BOTH'],
-      [Blockly.Msg['TEXT_TRIM_OPERATOR_LEFT'], 'LEFT'],
-      [Blockly.Msg['TEXT_TRIM_OPERATOR_RIGHT'], 'RIGHT']
-    ];
-    this.setHelpUrl(Blockly.Msg['TEXT_TRIM_HELPURL']);
-    this.setStyle('text_blocks');
-    this.appendValueInput('TEXT')
-        .setCheck('String')
-        .appendField(new Blockly.FieldDropdown(OPERATORS), 'MODE');
-    this.setOutput(true, 'String');
-    this.setTooltip(Blockly.Msg['TEXT_TRIM_TOOLTIP']);
-  }
-};
 
   Blockly.Blocks['emote'] = {
   init: function() {
@@ -235,7 +215,7 @@ Blockly.JavaScript['emote'] = block => {
   const socket_emit_object = {
     type: block.getFieldValue('emote_type')
   };
-  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
 
 Blockly.Blocks['open_hand'] = {
@@ -264,7 +244,7 @@ Blockly.JavaScript['open_hand'] = block => {
   const socket_emit_object = {
     side: block.getFieldValue('side')
   };
-  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
 
 Blockly.Blocks['close_hand'] = {
@@ -293,7 +273,7 @@ Blockly.JavaScript['close_hand'] = block => {
   const socket_emit_object = {
     side: block.getFieldValue('side')
   };
-  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
 
 Blockly.Blocks['pick_up_40mm_ball'] = {
@@ -333,7 +313,7 @@ Blockly.JavaScript['pick_up_40mm_ball'] = block => {
     y: Blockly.JavaScript.valueToCode(block, 'y', Blockly.JavaScript.ORDER_ATOMIC),
     z: Blockly.JavaScript.valueToCode(block, 'z', Blockly.JavaScript.ORDER_ATOMIC) 
   };
-  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
 
 Blockly.Blocks['drop_off_40mm_ball'] = {
@@ -373,22 +353,14 @@ Blockly.JavaScript['drop_off_40mm_ball'] = block => {
     y: Blockly.JavaScript.valueToCode(block, 'y', Blockly.JavaScript.ORDER_ATOMIC),
     z: Blockly.JavaScript.valueToCode(block, 'z', Blockly.JavaScript.ORDER_ATOMIC) 
   };
-  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
 
 
 
 
 
-
-
-
-
-
-
-
-
-// ** // ** //
+// TESTIKÄSKYT //
 
 Blockly.FieldAngle.CLOCKWISE = true;
 Blockly.FieldAngle.OFFSET = 90;
@@ -396,16 +368,26 @@ Blockly.FieldAngle.WRAP = (-180, 180);
 // Blockly.FieldAngle.ROUND = 5;
 
 
-
-
-
-
-
-
-
-// ###################
-
-
+Blockly.Blocks['tts2'] = {
+  /**
+   * Block for trimming spaces.
+   * @this {Blockly.Block}
+   */
+  init: function() {
+    var OPERATORS = [
+      [Blockly.Msg['TEXT_TRIM_OPERATOR_BOTH'], 'BOTH'],
+      [Blockly.Msg['TEXT_TRIM_OPERATOR_LEFT'], 'LEFT'],
+      [Blockly.Msg['TEXT_TRIM_OPERATOR_RIGHT'], 'RIGHT']
+    ];
+    this.setHelpUrl(Blockly.Msg['TEXT_TRIM_HELPURL']);
+    this.setStyle('text_blocks');
+    this.appendValueInput('TEXT')
+        .setCheck('String')
+        .appendField(new Blockly.FieldDropdown(OPERATORS), 'MODE');
+    this.setOutput(true, 'String');
+    this.setTooltip(Blockly.Msg['TEXT_TRIM_TOOLTIP']);
+  }
+};
 
 
 Blockly.Blocks['liiku_1'] = {

@@ -465,7 +465,28 @@
           </shadow>
         </value>
       </block>     
-      <block type="pick_ball">
+      </block>     
+      <block type="tts">
+        <value name="text">
+          <shadow type="text">
+            <field name="TEXT">Hei!</field>
+          </shadow>
+        </value>
+      </block>     
+      <block type="face">
+        <value name="duration">
+          <shadow type="math_number">
+            <field name="NUM">5</field>
+          </shadow>
+        </value>
+      </block>     
+      <block type="emote">
+      </block>     
+      <block type="open_hand">
+      </block>     
+      <block type="close_hand">
+      </block>     
+      <block type="pick_up_color_ball">
       </block> 
       <block type="pick_up_40mm_ball">
         <value name="x">
@@ -500,30 +521,13 @@
             <field name="NUM">0</field>
           </shadow>
         </value>
-      </block>     
-      <block type="tts">
-        <value name="text">
-          <shadow type="text">
-            <field name="TEXT">Hei!</field>
-          </shadow>
-        </value>
-      </block>     
-      <block type="face">
-        <value name="duration">
-          <shadow type="math_number">
-            <field name="NUM">5</field>
-          </shadow>
-        </value>
-      </block>     
-      <block type="emote">
-      </block>     
-      <block type="open_hand">
-      </block>     
-      <block type="close_hand">
-      </block>     
     </category>
 
     <category name="Testipalikat" colour="%{BKY_LOOPS_HUE}" expanded="false">
+      <block type="temp4">
+        <field name="FIELDNAME">0</field>
+
+      </block>
       <block type="tts2">
         <value name="turn_angle">
           <shadow type="math_number">
@@ -531,8 +535,6 @@
           </shadow>
         </value>
       </block>     
-      <!-- <block type="robot_start"></block> -->
-      
       <block type="liiku_1">
         <value name="määrä">
           <shadow type="math_number">
@@ -554,10 +556,7 @@
 
       <block type="temp1">
       </block>
-      <block type="temp4">
-        <field name="FIELDNAME">0</field>
 
-      </block>
       <block type="ttemp_print"></block>
       <block type="liiku_eteen_cm"></block>
       <block type="liiku_taakse_cm"></block>
@@ -572,12 +571,11 @@
       <block type="test_block"></block>
       <block type="test_block_2"></block>
       
-      <!-- <block type="liikuta_kasi_alas"></block> -->
-      <!-- <block type="liikuta_kasi_sivulle"></block> -->
-      <!-- <block type="vilkuta"></block> --> 
-      <!-- <block type="robot_run"></block> -->
+      <!-- <block type="liikuta_kasi_alas"></block>
+      <block type="liikuta_kasi_sivulle"></block>
+      <block type="vilkuta"></block> 
+      <block type="robot_run"></block> -->
     </category>
-    
     <sep></sep>
     <!-- test test test  -->
     <!-- <category name="Library" expanded="true">
