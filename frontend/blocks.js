@@ -74,20 +74,21 @@ Blockly.Blocks['pick_ball'] = {
   init: function() {
     this.appendDummyInput()
       .setAlign(Blockly.ALIGN_RIGHT)
-      .appendField("Poimi  ")
+      .appendField("Poimi ")
+      let field = new Blockly.FieldColour('#ff4040');
+      field.setColours(
+        ['#ff4040', '#40ff40', '#4040ff'],
+        ['red', 'green', 'blue']);
+        field.setColumns(3);
+    this.appendDummyInput()
+      .appendField(field, 'COLOUR')
+      .appendField(' pallo ');
+    this.appendDummyInput()
       .appendField(new Blockly.FieldDropdown([
         ['oikealla', 'right'],
         ['vasemmalla', 'left']
       ]), 'pick_ball_hand')
       .appendField(" kädellä ");
-      let field = new Blockly.FieldColour('#ff4040');
-      field.setColours(
-          ['#ff4040', '#40ff40', '#4040ff'],
-          ['red', 'green', 'blue']);
-      field.setColumns(3);
-      this.appendDummyInput()
-      .appendField(field, 'COLOUR')
-      .appendField(' pallo');
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -237,7 +238,7 @@ Blockly.JavaScript['emote'] = block => {
   return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
 };
 
-  Blockly.Blocks['open_hand'] = {
+Blockly.Blocks['open_hand'] = {
   init: function() {
     this.appendDummyInput()
       .setAlign(Blockly.ALIGN_RIGHT)
@@ -266,9 +267,114 @@ Blockly.JavaScript['open_hand'] = block => {
   return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
 };
 
+Blockly.Blocks['close_hand'] = {
+  init: function() {
+    this.appendDummyInput()
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Sulje ")
+      .appendField(new Blockly.FieldDropdown([
+        ['oikea', 'right'],
+        ['vasen', 'left']
+      ]), 'side')
+      .appendField(" koura (vai käsi?)")
+      .setAlign(Blockly.ALIGN_RIGHT);
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(212);
+    this.setTooltip("");
+    this.setHelpUrl("");
+  }
+};
 
+Blockly.JavaScript['close_hand'] = block => {
 
+  const socket_event_name = "close_hand";
+  const socket_emit_object = {
+    side: block.getFieldValue('side')
+  };
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+};
 
+Blockly.Blocks['pick_up_40mm_ball'] = {
+  init: function() {
+    this.appendDummyInput()
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Poimi ")
+      .appendField(new Blockly.FieldDropdown([
+        ['oikealla', 'right'],
+        ['vasemmalla', 'left']
+      ]), 'pick_ball_hand')
+      .appendField(" kädellä pallo pisteestä");
+    this.appendValueInput("x")
+      .appendField(" x")
+      .setCheck("Number");
+    this.appendValueInput("y")
+      .appendField(" y")
+      .setCheck("Number");
+    this.appendValueInput("z")
+      .appendField(" z")
+      .setCheck("Number");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(212);
+    this.setTooltip("");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.JavaScript['pick_up_40mm_ball'] = block => {
+
+  const socket_event_name = "pick_up_40mm_ball";
+  const socket_emit_object = {
+    hand: block.getFieldValue('pick_ball_hand'),
+    x: Blockly.JavaScript.valueToCode(block, 'x', Blockly.JavaScript.ORDER_ATOMIC),
+    y: Blockly.JavaScript.valueToCode(block, 'y', Blockly.JavaScript.ORDER_ATOMIC),
+    z: Blockly.JavaScript.valueToCode(block, 'z', Blockly.JavaScript.ORDER_ATOMIC) 
+  };
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+};
+
+Blockly.Blocks['drop_off_40mm_ball'] = {
+  init: function() {
+    this.appendDummyInput()
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Laske ")
+      .appendField(new Blockly.FieldDropdown([
+        ['oikeasta', 'right'],
+        ['vasemmasta', 'left']
+      ]), 'drop_off_ball_hand')
+      .appendField(" kädellä pallo pisteeseen");
+    this.appendValueInput("x")
+      .appendField(" x")
+      .setCheck("Number");
+    this.appendValueInput("y")
+      .appendField(" y")
+      .setCheck("Number");
+    this.appendValueInput("z")
+      .appendField(" z")
+      .setCheck("Number");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(212);
+    this.setTooltip("");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.JavaScript['drop_off_40mm_ball'] = block => {
+
+  const socket_event_name = "drop_off_40mm_ball";
+  const socket_emit_object = {
+    hand: block.getFieldValue('drop_off_ball_hand'),
+    x: Blockly.JavaScript.valueToCode(block, 'x', Blockly.JavaScript.ORDER_ATOMIC),
+    y: Blockly.JavaScript.valueToCode(block, 'y', Blockly.JavaScript.ORDER_ATOMIC),
+    z: Blockly.JavaScript.valueToCode(block, 'z', Blockly.JavaScript.ORDER_ATOMIC) 
+  };
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+};
 
 
 

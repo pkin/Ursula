@@ -204,7 +204,6 @@ Code.bindClick = function(el, func) {
   el.addEventListener('touchend', func, true);
 };
 
-// oma
 Code.bindChange = function(el, func) {
   if (typeof el == 'string') {
     el = document.getElementById(el);
@@ -409,8 +408,8 @@ Code.init = function() {
     }
 
     // OMA - estää sulkemasta palikkakategoriaa UI:ssa kun palikka otettu - checkbox UI:hin?
-    if (Code.workspace)
-      Code.workspace.toolbox_.flyout_.autoClose = false;
+    // if (Code.workspace)
+    //   Code.workspace.toolbox_.flyout_.autoClose = false;
 
   };
   window.addEventListener('resize', onresize, false);

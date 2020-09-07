@@ -42,6 +42,12 @@ io.on('connection', (socket) => {
     socket.on('emote', data => { console.log("received: 'emote',", data); });
     
     socket.on('open_hand', data => { console.log("received: 'open_hand',", data); });
+
+    socket.on('close_hand', data => { console.log("received: 'close_hand',", data); });
+    
+    socket.on('pick_up_40mm_ball', data => { console.log("received: 'pick_up_40mm_ball',", data); });
+    
+    socket.on('drop_off_40mm_ball', data => { console.log("received: 'drop_off_40mm_ball',", data); });
     
     socket.on('ask_for_done', () => {
         console.log("received: 'ask_for_done' (testing), emitting 'done'...");
