@@ -32,8 +32,8 @@ Blockly.JavaScript['relative_move'] = block => {
   const socket_event_name = "relative_move";
   const socket_emit_object = {
     move_direction: block.getFieldValue('move_direction'),
-    move_angle: Blockly.JavaScript.valueToCode(block, 'move_angle', Blockly.JavaScript.ORDER_ATOMIC),
-    move_distance: 10 * Blockly.JavaScript.valueToCode(block, 'move_distance', Blockly.JavaScript.ORDER_ATOMIC)
+    move_angle: parseInt(eval(Blockly.JavaScript.valueToCode(block, 'move_angle', Blockly.JavaScript.ORDER_ATOMIC))),
+    move_distance: parseInt(10 * eval(Blockly.JavaScript.valueToCode(block, 'move_distance', Blockly.JavaScript.ORDER_ATOMIC)))
   };
   return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
@@ -65,7 +65,7 @@ Blockly.JavaScript['turn'] = block => {
   const socket_event_name = "turn";
   const socket_emit_object = {
     move_direction: block.getFieldValue('turn_direction'),
-    move_angle: Blockly.JavaScript.valueToCode(block, 'turn_angle', Blockly.JavaScript.ORDER_ATOMIC)
+    move_angle: parseInt(eval(Blockly.JavaScript.valueToCode(block, 'turn_angle', Blockly.JavaScript.ORDER_ATOMIC)))
   };
   return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
@@ -173,7 +173,7 @@ Blockly.JavaScript['face'] = block => {
   const socket_event_name = "face";
   const socket_emit_object = {
     type: block.getFieldValue('expression'),
-    duration: Blockly.JavaScript.valueToCode(block, 'duration', Blockly.JavaScript.ORDER_ATOMIC)
+    duration: parseInt(1000 * eval(Blockly.JavaScript.valueToCode(block, 'duration', Blockly.JavaScript.ORDER_ATOMIC)))
   };
   return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
@@ -299,9 +299,9 @@ Blockly.JavaScript['pick_up_40mm_ball'] = block => {
   const socket_event_name = "pick_up_40mm_ball";
   const socket_emit_object = {
     hand: block.getFieldValue('pick_ball_hand'),
-    x: Blockly.JavaScript.valueToCode(block, 'x', Blockly.JavaScript.ORDER_ATOMIC),
-    y: Blockly.JavaScript.valueToCode(block, 'y', Blockly.JavaScript.ORDER_ATOMIC),
-    z: Blockly.JavaScript.valueToCode(block, 'z', Blockly.JavaScript.ORDER_ATOMIC) 
+    x: parseInt(eval(Blockly.JavaScript.valueToCode(block, 'x', Blockly.JavaScript.ORDER_ATOMIC))),
+    y: parseInt(eval(Blockly.JavaScript.valueToCode(block, 'y', Blockly.JavaScript.ORDER_ATOMIC))),
+    z: parseInt(eval(Blockly.JavaScript.valueToCode(block, 'z', Blockly.JavaScript.ORDER_ATOMIC)))
   };
   return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
@@ -338,9 +338,9 @@ Blockly.JavaScript['drop_off_40mm_ball'] = block => {
   const socket_event_name = "drop_off_40mm_ball";
   const socket_emit_object = {
     hand: block.getFieldValue('drop_off_ball_hand'),
-    x: Blockly.JavaScript.valueToCode(block, 'x', Blockly.JavaScript.ORDER_ATOMIC),
-    y: Blockly.JavaScript.valueToCode(block, 'y', Blockly.JavaScript.ORDER_ATOMIC),
-    z: Blockly.JavaScript.valueToCode(block, 'z', Blockly.JavaScript.ORDER_ATOMIC) 
+    x: parseInt(eval(Blockly.JavaScript.valueToCode(block, 'x', Blockly.JavaScript.ORDER_ATOMIC))),
+    y: parseInt(eval(Blockly.JavaScript.valueToCode(block, 'y', Blockly.JavaScript.ORDER_ATOMIC))),
+    z: parseInt(eval(Blockly.JavaScript.valueToCode(block, 'z', Blockly.JavaScript.ORDER_ATOMIC))) 
   };
   return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
@@ -366,8 +366,11 @@ Blockly.Blocks['wait'] = {
 Blockly.JavaScript['wait'] = block => {
   const socket_event_name = "wait";
   const socket_emit_object = {
-    duration: Blockly.JavaScript.valueToCode(block, 'duration', Blockly.JavaScript.ORDER_ATOMIC) 
+    duration: parseInt(1000 * eval(Blockly.JavaScript.valueToCode(block, 'duration', Blockly.JavaScript.ORDER_NONE)))
   };
+  // console.log(eval(Blockly.JavaScript.valueToCode(block, 'duration', Blockly.JavaScript.ORDER_NONE)));
+  // console.log(eval(Number(Blockly.JavaScript.valueToCode(block, 'duration', Blockly.JavaScript.ORDER_NONE))));
+  // console.log(Number(eval(Blockly.JavaScript.valueToCode(block, 'duration', Blockly.JavaScript.ORDER_NONE))));
   return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
 

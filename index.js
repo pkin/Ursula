@@ -53,7 +53,7 @@ io.on('connection', (socket) => {
         console.log("received: 'wait',", data);
         const duration = parseInt(data.duration);
         if (!isNaN(duration)) {
-            setTimeout( () => { socket.emit('done') }, 1000 * duration); 
+            setTimeout( () => { socket.emit('done') }, duration); 
         }
     });
     

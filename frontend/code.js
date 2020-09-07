@@ -578,7 +578,7 @@ const emittoiSeuraavaKomento = () => {
   
   if (!socket_event_name && !socket_emit_object) {
     socket.emit("finished");
-    ohjelma_suorituksessa ? console.log('Ohjelman suoritus loppui!') : console.log('Ohjelman ei ole käynnissä.') ;
+    ohjelma_suorituksessa ? console.log('Ohjelman suoritus loppui!') : console.log('Ohjelma ei ole käynnissä.') ;
     ohjelma_suorituksessa = false;
     robottikomennot.length = 0;
   }
