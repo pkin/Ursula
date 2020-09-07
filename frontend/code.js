@@ -474,7 +474,8 @@ Code.init = function() {
   Code.bindClick('valikkoKiinni_2', () => { document.getElementById("lataus_valikko").style.width = "0%"; });
   // Code.bindClick('donetestinappi', () => { console.log(Date.now() + " done"); emitDone(); } );
   // Code.bindClick('donetestinappi', () => { console.log(Date.now() + " done");  } );
-  Code.bindClick('donetestinappi', () => { socket.emit("ask_for_done"); } );
+  // Code.bindClick('donetestinappi', () => { socket.emit("ask_for_done"); } );
+  Code.bindClick('donetestinappi', () => { socket.emit('wait', { duration: 0 })});
   // Code.bindClick('donetestinappi',  socket.emit("done")  );
   // Code.bindClick('loadButton', Code.loadXML);
   // Code.bindClick('saves', Code.loadSaves);

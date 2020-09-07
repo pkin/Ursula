@@ -49,13 +49,15 @@ io.on('connection', (socket) => {
     
     socket.on('drop_off_40mm_ball', data => { console.log("received: 'drop_off_40mm_ball',", data); });
     
-    socket.on('wait', data => { console.log("received: 'wait',", data); });
-    
-    socket.on('ask_for_done', () => {
-        console.log("received: 'ask_for_done' (testing), emitting 'done'...");
-        socket.emit('done');
+    socket.on('wait', data => {
+        console.log("received: 'wait',", data);
+        const duration = parseInt(data.duration);
+        if (!isNaN(duration)) {
+            setTimeout( () => { socket.emit('done') }, 1000 * duration); 
+        }
     });
-
+    
+    
     socket.on('tarkista_nimi', (nimi, callback) => {        
         callback(null, onkoNimiTallennetuissa(nimi));
     });
@@ -67,6 +69,11 @@ io.on('connection', (socket) => {
         // callback(null, ++counter + " " + nimi);
         callback(null, onkoNimiTallennetuissa(nimi));
     });
+    
+    // socket.on('ask_for_done', () => {
+    //     console.log("received: 'ask_for_done' (testing), emitting 'done'...");
+    //     socket.emit('done');
+    // });
 
 });
 
@@ -78,13 +85,13 @@ const onkoNimiTallennetuissa = nimi => {
     const olemassa = fs.readdirSync(hakemisto).some( (element, index) => {
         let data = fs.readFileSync(hakemisto + "/" + element);
         if (nimi === JSON.parse(data)[0])
-            return true;
-            else
-            return false;
+        return true;
+        else
+        return false;
     });
     
     return olemassa;
-
+    
     // Tämä toimii myös:
     // let olemassa = false;
     // for (let file of fs.readdirSync(hakemisto)) {
@@ -93,22 +100,22 @@ const onkoNimiTallennetuissa = nimi => {
         //     if (nimi === JSON.parse(data)[0]) {
             //         olemassa = true;
             //         break;
-    //     };
-    // };
+            //     };
+            // };
     
-}
-
-
-app.get('/api/onkoTallennusJoOlemassa/:id', (req, res) => {
-    
-    const fs = require('fs');
-    const filename = './tallennukset/' + req.params.id + '.xml';
-    
-    fs.readFile(filename, (err, data) => {
-        if (err) {
-            // console.log(err);
-            res.writeHead(200, {'Content-Type': 'text/xml'});
-            res.write("ei löydy");
+        }
+        
+        
+        app.get('/api/onkoTallennusJoOlemassa/:id', (req, res) => {
+            
+            const fs = require('fs');
+            const filename = './tallennukset/' + req.params.id + '.xml';
+            
+            fs.readFile(filename, (err, data) => {
+                if (err) {
+                    // console.log(err);
+                    res.writeHead(200, {'Content-Type': 'text/xml'});
+                    res.write("ei löydy");
             res.end();
         }
         else if (data) {

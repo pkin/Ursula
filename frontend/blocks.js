@@ -99,14 +99,12 @@ Blockly.Blocks['pick_up_color_ball'] = {
 };
 
 Blockly.JavaScript['pick_up_color_ball'] = block => {
-
   let ball_colour = "";
   switch (block.getFieldValue('COLOUR')) {
     case '#ff4040': ball_colour = "red"; break;
     case '#40ff40': ball_colour = "green"; break;
     case '#4040ff': ball_colour = "blue"; break;
   }
-
   const socket_event_name = "pick_up_color_ball";
   const socket_emit_object = {
     hand: block.getFieldValue('pick_ball_hand'),
@@ -137,7 +135,6 @@ Blockly.Blocks['tts'] = {
 };
 
 Blockly.JavaScript['tts'] = block => {
-
   const socket_event_name = "text";
   const socket_emit_object = {
     language: block.getFieldValue('language'),
@@ -173,7 +170,6 @@ Blockly.Blocks['face'] = {
 };
 
 Blockly.JavaScript['face'] = block => {
-
   const socket_event_name = "face";
   const socket_emit_object = {
     type: block.getFieldValue('expression'),
@@ -182,9 +178,7 @@ Blockly.JavaScript['face'] = block => {
   return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
 
-
-
-  Blockly.Blocks['emote'] = {
+Blockly.Blocks['emote'] = {
   init: function() {
     this.appendDummyInput()
       .setAlign(Blockly.ALIGN_RIGHT)
@@ -210,7 +204,6 @@ Blockly.JavaScript['face'] = block => {
 };
 
 Blockly.JavaScript['emote'] = block => {
-
   const socket_event_name = "emote";
   const socket_emit_object = {
     type: block.getFieldValue('emote_type')
@@ -239,7 +232,6 @@ Blockly.Blocks['open_hand'] = {
 };
 
 Blockly.JavaScript['open_hand'] = block => {
-
   const socket_event_name = "open_hand";
   const socket_emit_object = {
     side: block.getFieldValue('side')
@@ -268,7 +260,6 @@ Blockly.Blocks['close_hand'] = {
 };
 
 Blockly.JavaScript['close_hand'] = block => {
-
   const socket_event_name = "close_hand";
   const socket_emit_object = {
     side: block.getFieldValue('side')
@@ -305,7 +296,6 @@ Blockly.Blocks['pick_up_40mm_ball'] = {
 };
 
 Blockly.JavaScript['pick_up_40mm_ball'] = block => {
-
   const socket_event_name = "pick_up_40mm_ball";
   const socket_emit_object = {
     hand: block.getFieldValue('pick_ball_hand'),
@@ -345,7 +335,6 @@ Blockly.Blocks['drop_off_40mm_ball'] = {
 };
 
 Blockly.JavaScript['drop_off_40mm_ball'] = block => {
-
   const socket_event_name = "drop_off_40mm_ball";
   const socket_emit_object = {
     hand: block.getFieldValue('drop_off_ball_hand'),
@@ -375,7 +364,6 @@ Blockly.Blocks['wait'] = {
 };
 
 Blockly.JavaScript['wait'] = block => {
-
   const socket_event_name = "wait";
   const socket_emit_object = {
     duration: Blockly.JavaScript.valueToCode(block, 'duration', Blockly.JavaScript.ORDER_ATOMIC) 
