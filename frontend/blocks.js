@@ -203,6 +203,84 @@ Blockly.Blocks['tts2'] = {
   }
 };
 
+  Blockly.Blocks['emote'] = {
+  init: function() {
+    this.appendDummyInput()
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Do ")
+      .appendField(new Blockly.FieldDropdown([
+        ['dab', 'dab'],
+        ['flosh', 'flosh'],
+        ['best mates', 'best_mates'],
+        ['facepalm', 'facepalm'],
+        ['t-pose', 't-pose'],
+        ['egypt', 'egypt'],
+        ['dance', 'dance']
+      ]), 'emote_type')
+      .appendField("!")
+      .setAlign(Blockly.ALIGN_RIGHT);
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(212);
+    this.setTooltip("");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.JavaScript['emote'] = block => {
+
+  const socket_event_name = "emote";
+  const socket_emit_object = {
+    type: block.getFieldValue('emote_type')
+  };
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+};
+
+  Blockly.Blocks['open_hand'] = {
+  init: function() {
+    this.appendDummyInput()
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Avaa ")
+      .appendField(new Blockly.FieldDropdown([
+        ['oikea', 'right'],
+        ['vasen', 'left']
+      ]), 'side')
+      .appendField(" koura (vai käsi?)")
+      .setAlign(Blockly.ALIGN_RIGHT);
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(212);
+    this.setTooltip("");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.JavaScript['open_hand'] = block => {
+
+  const socket_event_name = "open_hand";
+  const socket_emit_object = {
+    side: block.getFieldValue('side')
+  };
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});`;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ** // ** //
 

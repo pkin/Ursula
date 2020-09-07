@@ -38,6 +38,10 @@ io.on('connection', (socket) => {
     socket.on('text', data => { console.log("received: 'text',", data); });
 
     socket.on('face', data => { console.log("received: 'face',", data); });
+
+    socket.on('emote', data => { console.log("received: 'emote',", data); });
+    
+    socket.on('open_hand', data => { console.log("received: 'open_hand',", data); });
     
     socket.on('ask_for_done', () => {
         console.log("received: 'ask_for_done' (testing), emitting 'done'...");
