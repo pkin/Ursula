@@ -356,6 +356,36 @@ Blockly.JavaScript['drop_off_40mm_ball'] = block => {
   return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
 
+Blockly.Blocks['wait'] = {
+  init: function() {
+    this.appendDummyInput()
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Odota");
+    this.appendValueInput("duration")
+      .setCheck("Number");
+    this.appendDummyInput()
+      .appendField("sekuntia");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(212);
+    this.setTooltip("");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.JavaScript['wait'] = block => {
+
+  const socket_event_name = "wait";
+  const socket_emit_object = {
+    duration: Blockly.JavaScript.valueToCode(block, 'duration', Blockly.JavaScript.ORDER_ATOMIC) 
+  };
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
+};
+
+
+
+
 
 
 

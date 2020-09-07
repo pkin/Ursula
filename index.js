@@ -49,6 +49,8 @@ io.on('connection', (socket) => {
     
     socket.on('drop_off_40mm_ball', data => { console.log("received: 'drop_off_40mm_ball',", data); });
     
+    socket.on('wait', data => { console.log("received: 'wait',", data); });
+    
     socket.on('ask_for_done', () => {
         console.log("received: 'ask_for_done' (testing), emitting 'done'...");
         socket.emit('done');
