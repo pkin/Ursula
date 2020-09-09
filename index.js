@@ -21,21 +21,21 @@ let counter = 1;
 
 io.on('connection', (socket) => {
     
-    console.log('a user connected');
+    console.log('a user connected (socket.io)');
     
     socket.on('disconnect', () => {
-        console.log('user disconnected');
+        console.log('user disconnected (socket.io)');
     });
 
     socket.on('finished', data => { console.log("received: 'finished' ", data ? data : ''); });
 
     socket.on('relative_move', data => { console.log("received: 'relative_move',", data); });
 
-    socket.on('turn', data => { console.log("received: 'turn',", data); });
+    // socket.on('turn', data => { console.log("received: 'turn',", data); });
     
     socket.on('pick_up_color_ball', data => { console.log("received: 'pick_up_color_ball',", data); });
 
-    socket.on('text', data => { console.log("received: 'text',", data); });
+    socket.on('tts', data => { console.log("received: 'text',", data); });
 
     socket.on('face', data => { console.log("received: 'face',", data); });
 
