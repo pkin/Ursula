@@ -30,10 +30,13 @@ Blockly.Blocks['relative_move'] = {
 
 Blockly.JavaScript['relative_move'] = block => {
   const socket_event_name = "relative_move";
+  let backward = 1;
+  if (block.getFieldValue('move_direction') === 'backward') {
+    backward = -1;
+  }
   const socket_emit_object = {
-    move_direction: block.getFieldValue('move_direction'),
-    move_angle: parseInt(eval(Blockly.JavaScript.valueToCode(block, 'move_angle', Blockly.JavaScript.ORDER_ATOMIC))),
-    move_distance: parseInt(10 * eval(Blockly.JavaScript.valueToCode(block, 'move_distance', Blockly.JavaScript.ORDER_ATOMIC)))
+    direction: parseInt(eval(Blockly.JavaScript.valueToCode(block, 'move_angle', Blockly.JavaScript.ORDER_ATOMIC))),
+    distance: backward * parseInt(10 * eval(Blockly.JavaScript.valueToCode(block, 'move_distance', Blockly.JavaScript.ORDER_ATOMIC)))
   };
   return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
@@ -62,10 +65,14 @@ Blockly.Blocks['turn'] = {
 };
 
 Blockly.JavaScript['turn'] = block => {
-  const socket_event_name = "turn";
+  const socket_event_name = "relative_move";
+  let direction = 1;
+  if (block.getFieldValue('turn_direction') === 'right') {
+    direction = -1;
+  }
   const socket_emit_object = {
-    move_direction: block.getFieldValue('turn_direction'),
-    move_angle: parseInt(eval(Blockly.JavaScript.valueToCode(block, 'turn_angle', Blockly.JavaScript.ORDER_ATOMIC)))
+    direction: direction * parseInt(eval(Blockly.JavaScript.valueToCode(block, 'turn_angle', Blockly.JavaScript.ORDER_ATOMIC))),
+    distance: 10
   };
   return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
@@ -120,7 +127,7 @@ Blockly.Blocks['tts'] = {
       .appendField("Puhu ")
       .appendField(new Blockly.FieldDropdown([
         ['suomeksi', 'fi'],
-        ['ruotsiksi', 'se'],
+        ['ruotsiksi', 'sv'],
         ['englanniksi', 'en']
       ]), 'language')
       .appendField(' ')
@@ -135,7 +142,7 @@ Blockly.Blocks['tts'] = {
 };
 
 Blockly.JavaScript['tts'] = block => {
-  const socket_event_name = "text";
+  const socket_event_name = "tts";
   const socket_emit_object = {
     language: block.getFieldValue('language'),
     text: Blockly.JavaScript.valueToCode(block, 'text', Blockly.JavaScript.ORDER_NONE) || '\'\''
@@ -186,7 +193,7 @@ Blockly.Blocks['emote'] = {
       .appendField(new Blockly.FieldDropdown([
         ['dab', 'dab'],
         ['flosh', 'flosh'],
-        ['best mates', 'best_mates'],
+        ['best mates', 'best mates'],
         ['facepalm', 'facepalm'],
         ['t-pose', 't-pose'],
         ['egypt', 'egypt'],
@@ -217,8 +224,8 @@ Blockly.Blocks['open_hand'] = {
       .setAlign(Blockly.ALIGN_RIGHT)
       .appendField("Avaa ")
       .appendField(new Blockly.FieldDropdown([
-        ['oikea', 'right'],
-        ['vasen', 'left']
+        ['oikea', 'right_arm'],
+        ['vasen', 'left_arm']
       ]), 'side')
       .appendField(" koura (vai käsi?)")
       .setAlign(Blockly.ALIGN_RIGHT);
@@ -234,7 +241,7 @@ Blockly.Blocks['open_hand'] = {
 Blockly.JavaScript['open_hand'] = block => {
   const socket_event_name = "open_hand";
   const socket_emit_object = {
-    side: block.getFieldValue('side')
+    handle: block.getFieldValue('side')
   };
   return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
@@ -245,8 +252,8 @@ Blockly.Blocks['close_hand'] = {
       .setAlign(Blockly.ALIGN_RIGHT)
       .appendField("Sulje ")
       .appendField(new Blockly.FieldDropdown([
-        ['oikea', 'right'],
-        ['vasen', 'left']
+        ['oikea', 'right_arm'],
+        ['vasen', 'left_arm']
       ]), 'side')
       .appendField(" koura (vai käsi?)")
       .setAlign(Blockly.ALIGN_RIGHT);
@@ -262,7 +269,7 @@ Blockly.Blocks['close_hand'] = {
 Blockly.JavaScript['close_hand'] = block => {
   const socket_event_name = "close_hand";
   const socket_emit_object = {
-    side: block.getFieldValue('side')
+    handle: block.getFieldValue('side')
   };
   return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
@@ -273,8 +280,8 @@ Blockly.Blocks['pick_up_40mm_ball'] = {
       .setAlign(Blockly.ALIGN_RIGHT)
       .appendField("Poimi ")
       .appendField(new Blockly.FieldDropdown([
-        ['oikealla', 'right'],
-        ['vasemmalla', 'left']
+        ['oikealla', 'right_arm'],
+        ['vasemmalla', 'left_arm']
       ]), 'pick_ball_hand')
       .appendField(" kädellä pallo pisteestä");
     this.appendValueInput("x")
@@ -298,7 +305,7 @@ Blockly.Blocks['pick_up_40mm_ball'] = {
 Blockly.JavaScript['pick_up_40mm_ball'] = block => {
   const socket_event_name = "pick_up_40mm_ball";
   const socket_emit_object = {
-    hand: block.getFieldValue('pick_ball_hand'),
+    handle: block.getFieldValue('pick_ball_hand'),
     x: parseInt(eval(Blockly.JavaScript.valueToCode(block, 'x', Blockly.JavaScript.ORDER_ATOMIC))),
     y: parseInt(eval(Blockly.JavaScript.valueToCode(block, 'y', Blockly.JavaScript.ORDER_ATOMIC))),
     z: parseInt(eval(Blockly.JavaScript.valueToCode(block, 'z', Blockly.JavaScript.ORDER_ATOMIC)))
@@ -312,8 +319,8 @@ Blockly.Blocks['drop_off_40mm_ball'] = {
       .setAlign(Blockly.ALIGN_RIGHT)
       .appendField("Laske ")
       .appendField(new Blockly.FieldDropdown([
-        ['oikeasta', 'right'],
-        ['vasemmasta', 'left']
+        ['oikeasta', 'right_arm'],
+        ['vasemmasta', 'left_arm']
       ]), 'drop_off_ball_hand')
       .appendField(" kädellä pallo pisteeseen");
     this.appendValueInput("x")
@@ -337,7 +344,7 @@ Blockly.Blocks['drop_off_40mm_ball'] = {
 Blockly.JavaScript['drop_off_40mm_ball'] = block => {
   const socket_event_name = "drop_off_40mm_ball";
   const socket_emit_object = {
-    hand: block.getFieldValue('drop_off_ball_hand'),
+    handle: block.getFieldValue('drop_off_ball_hand'),
     x: parseInt(eval(Blockly.JavaScript.valueToCode(block, 'x', Blockly.JavaScript.ORDER_ATOMIC))),
     y: parseInt(eval(Blockly.JavaScript.valueToCode(block, 'y', Blockly.JavaScript.ORDER_ATOMIC))),
     z: parseInt(eval(Blockly.JavaScript.valueToCode(block, 'z', Blockly.JavaScript.ORDER_ATOMIC))) 
