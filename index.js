@@ -35,7 +35,7 @@ io.on('connection', (socket) => {
     
     socket.on('pick_up_color_ball', data => { console.log("received: 'pick_up_color_ball',", data); });
 
-    socket.on('tts', data => { console.log("received: 'text',", data); });
+    socket.on('tts', data => { console.log("received: 'tts',", data); });
 
     socket.on('face', data => { console.log("received: 'face',", data); });
 
