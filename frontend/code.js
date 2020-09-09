@@ -555,6 +555,7 @@ Code.initLanguage = function() {
   document.getElementById('linkButton').title = MSG['linkTooltip'];
   document.getElementById('runButton').title = MSG['runTooltip'];
   document.getElementById('trashButton').title = MSG['trashTooltip'];
+
 };
 
 
@@ -565,6 +566,13 @@ let ohjelma_suorituksessa = false;
 // let tauko = false;
 
 const socket = io();
+
+socket.on('connect', () => {
+  console.log('connected to a server (socket.io)');
+  socket.on('disconnect', () => {
+    console.log('disconnected from the server (socket.io)');
+  });
+});
 
 socket.on("done", msg => {
   console.log('Saatiin "done" palvelimelta');

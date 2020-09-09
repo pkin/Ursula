@@ -147,7 +147,8 @@ Blockly.JavaScript['tts'] = block => {
     language: block.getFieldValue('language'),
     text: Blockly.JavaScript.valueToCode(block, 'text', Blockly.JavaScript.ORDER_NONE) || '\'\''
   };
-  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
+  // Koska Blockly tulkitsee käyttäjäohjelman suorituksen aikana, joudutaan palikkaan kiinnitetyn muuttujan arvo määrittää vasta tulkittavassa koodissa.
+  return `{ let temp_emit_object = ${JSON.stringify(socket_emit_object)};\ntemp_emit_object.text = ${socket_emit_object.text};\nrobottikomennot.push("${socket_event_name}", temp_emit_object);\n }`;
 };
 
 Blockly.Blocks['face'] = {
@@ -547,47 +548,6 @@ Blockly.Blocks['ttemp_print'] = {
   };
 
   Blockly.JavaScript['ttemp_print'] = function(block) {
-    // Print statement.
-    var msg = Blockly.JavaScript.valueToCode(block, 'TEXT',
-        Blockly.JavaScript.ORDER_NONE) || '\'\'';
-    return 'window.alert(' + msg + ');\n';
-  };
-
-
-//   ****
-
-  Blockly.Blocks['temp1'] = {
-    init: function() {
-        this.jsonInit({
-        
-            "type": "liikkuminen",
-            "message0": 'Liiku %1 cm %2 ',
-            "args0": [
-                {
-                    "type": "input_value",
-                    "name": "VALUE",
-                    "check": "Number"
-                },
-                {
-                    "type": "field_dropdown",
-                    "name": "FIELDNAME",
-                    "options": [
-                      [ "oikealle", "LEFT" ],
-                      [ "vasemmalle", "RIGHT" ]
-                    ]
-                  }
-              
-            ],
-            // "output": "Number",
-            "previousStatement": true,
-            "colour": 210,
-            "tooltip": "Returns number of letters in the provided text.",
-            "helpUrl": "http://www.w3schools.com/jsref/jsref_length_string.asp"
-        });
-      }      
-  };
-
-  Blockly.JavaScript['temp1'] = function(block) {
     // Print statement.
     var msg = Blockly.JavaScript.valueToCode(block, 'TEXT',
         Blockly.JavaScript.ORDER_NONE) || '\'\'';
@@ -1032,20 +992,3 @@ Blockly.Blocks['send'] = {
 //     }
 // };
 
-
-
-// Blockly.Blocks['robot_run'] = {
-//     init: function() {
-//       this.appendDummyInput()
-//           .setAlign(Blockly.ALIGN_RIGHT)
-//           .appendField("Robotti, aja!")
-//         //   .appendField(new Blockly.FieldNumber(0, 0, 255), "kaanny_oik")
-//         //   .appendField("s");
-//       this.setInputsInline(false);
-//       this.setColour(120);
-//       this.setPreviousStatement(true, null);
-//       this.setNextStatement(false, null);
-//    this.setTooltip("");
-//    this.setHelpUrl("");
-//     }
-// };
