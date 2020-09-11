@@ -148,7 +148,11 @@ Blockly.JavaScript['tts'] = block => {
     text: Blockly.JavaScript.valueToCode(block, 'text', Blockly.JavaScript.ORDER_NONE) || '\'\''
   };
   // Koska Blockly tulkitsee käyttäjäohjelman suorituksen aikana, joudutaan palikkaan kiinnitetyn muuttujan arvo määrittää vasta tulkittavassa koodissa.
-  return `{ let temp_emit_object = ${JSON.stringify(socket_emit_object)};\ntemp_emit_object.text = ${socket_emit_object.text};\nrobottikomennot.push("${socket_event_name}", temp_emit_object);\n }`;
+  return `{ 
+    let temp_emit_object = ${JSON.stringify(socket_emit_object)};
+    temp_emit_object.text = ${socket_emit_object.text};
+    if ([null, undefined, Infinity].includes(temp_emit_object.text)) temp_emit_object.text = '';
+    robottikomennot.push("${socket_event_name}", temp_emit_object);\n}\n`;
 };
 
 Blockly.Blocks['face'] = {
