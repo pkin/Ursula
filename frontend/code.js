@@ -37,51 +37,9 @@ const PORT = 3000;
  * Lookup for names of supported languages.  Keys should be in ISO 639 format.
  */
 Code.LANGUAGE_NAME = {
-  // 'ar': 'العربية',
-  // 'be-tarask': 'Taraškievica',
-  // 'br': 'Brezhoneg',
-  // 'ca': 'Català',
-  // 'cs': 'Česky',
-  // 'da': 'Dansk',
-  // 'de': 'Deutsch',
-  // 'el': 'Ελληνικά',
   'en': 'English',
-  // 'es': 'Español',
-  // 'et': 'Eesti',
-  // 'fa': 'فارسی',
   'fi': 'Finnish',
-  // 'fr': 'Français',
-  // 'he': 'עברית',
-  // 'hrx': 'Hunsrik',
-  // 'hu': 'Magyar',
-  // 'ia': 'Interlingua',
-  // 'is': 'Íslenska',
-  // 'it': 'Italiano',
-  // 'ja': '日本語',
-  // 'kab': 'Kabyle',
-  // 'ko': '한국어',
-  // 'mk': 'Македонски',
-  // 'ms': 'Bahasa Melayu',
-  // 'nb': 'Norsk Bokmål',
-  // 'nl': 'Nederlands, Vlaams',
-  // 'oc': 'Lenga d\'òc',
-  // 'pl': 'Polski',
-  // 'pms': 'Piemontèis',
-  // 'pt-br': 'Português Brasileiro',
-  // 'ro': 'Română',
-  // 'ru': 'Русский',
-  // 'sc': 'Sardu',
-  // 'sk': 'Slovenčina',
-  // 'sr': 'Српски',
   'sv': 'Svenska',
-  // 'ta': 'தமிழ்',
-  // 'th': 'ภาษาไทย',
-  // 'tlh': 'tlhIngan Hol',
-  // 'tr': 'Türkçe',
-  // 'uk': 'Українська',
-  // 'vi': 'Tiếng Việt',
-  // 'zh-hans': '简体中文',
-  // 'zh-hant': '正體中文'
 };
 
 /**
@@ -471,20 +429,39 @@ Code.init = function() {
   Code.bindClick('testLista', Code.lataaListaTallennetuista);
   Code.bindClick('valikkoAuki', () => { document.getElementById("valikko").style.width = "100%"; });
   Code.bindClick('valikkoKiinni', () => { document.getElementById("valikko").style.width = "0%"; });
-  Code.bindClick('valikkoKiinni_2', () => { document.getElementById("lataus_valikko").style.width = "0%"; });
+  
+
+  
+  //Code.bindClick('valikkoKiinni_2', () => { document.getElementById("lataus_valikko").style.width = "0%"; });
+  Code.bindClick('donetestinappi', () => { socket.emit('wait', { duration: 0 })});
+  
+  
+
+
+
+  const xyz = bool => {
+    console.log(bool);
+    // 1) tallennaoverlay freeze
+    // 2) 
+    document.getElementById("valikko").style.width = "50%";
+  }
+
+  Code.bindClick('testinappi', () => { Code.checkNameExists('dsfsdf', xyz) } );
+  
+  
+  
   // Code.bindClick('donetestinappi', () => { console.log(Date.now() + " done"); emitDone(); } );
   // Code.bindClick('donetestinappi', () => { console.log(Date.now() + " done");  } );
   // Code.bindClick('donetestinappi', () => { socket.emit("ask_for_done"); } );
-  Code.bindClick('donetestinappi', () => { socket.emit('wait', { duration: 0 })});
   // Code.bindClick('donetestinappi',  socket.emit("done")  );
   // Code.bindClick('loadButton', Code.loadXML);
   // Code.bindClick('saves', Code.loadSaves);
-  // Code.bindChange('saves', Code.selectSave);
   
   // Code.bindClick('closeLoadOverlay', () => { document.getElementById('overlay').hidden = true });
-  
-  
-  Code.lataaListaTallennetuista();
+
+  // testaamiseen valiiksi avoinna olevia valikoita
+  // Code.lataaListaTallennetuista();
+  Code.confirmLoad(0);
 
 
   // Disable the link button if page isn't backed by App Engine storage.
@@ -564,8 +541,15 @@ Code.initLanguage = function() {
 const robottikomennot = [];
 let ohjelma_suorituksessa = false;
 // let tauko = false;
-
 const socket = io();
+// Code.PORT = 3000;
+Code.ohjelmanNimiSamaKuinLadattaessa = true;
+Code.onkoLadattu = false;
+Code.onkoNimeäMuutettuLataamisenJälkeen = false;
+Code.ohjelmanID = 0;
+
+
+
 
 socket.on('connect', () => {
   console.log('connected to a server (socket.io)');
@@ -616,17 +600,10 @@ const emittoiSeuraavaKomento = () => {
   // }
 }
 
-//  tämä on 'robottikomento' on testaukseen
-socket.on('robottikomento', msg => {
-  // if kommnetoitu pois testin vuoksi
-  // if (msg == 'komento_valmis' && ohjelma_suorituksessa && !tauko)
-    console.log("komento_valmis viesti saatu Nodesta");
-    emittoiSeuraavaKomento();
-    // console.log(ohjelma_suorituksessa);
-});
+// 
 
 
-Code.tarkistaTallennusNimi = nimi => {
+Code.socketCallbackTest = nimi => {
 
   socket.emit('getCounter', nimi, function(error, counter) {
     console.log('Counter is', counter);
@@ -651,7 +628,7 @@ Code.tarkistaTallennusNimi = nimi => {
 //   // document.getElementById("lista_ohjelmista").value = lista_ohjelmista;
 // }
 
-{
+// {
 // const emittoiTauko = () => {
 //   socket.emit('robottikomento', 'tauko');
 //   console.log('ohjelman suorituksessa tauko');
@@ -699,12 +676,7 @@ Code.runJS = function() {
 
 
 
-Code.PORT = 3000;
 
-Code.ohjelmanNimiSamaKuinLadattaessa = true;
-Code.onkoLadattu = false;
-Code.onkoNimeäMuutettuLataamisenJälkeen = false;
-Code.ohjelmanID = 1234567;
 
 
 // Code.tarkistaTallennusNimi = nimi => {
@@ -730,9 +702,70 @@ Code.ohjelmanID = 1234567;
 //   userAction();  
 // }
 
+Code.checkNameExists = (name, cb) => {
+
+  const userAction = async () => {
+    const response = await fetch('http://localhost:3000/api/nimiolemassa/', {
+      method: 'POST',
+      body: `{"name":"${name}"}`, // string or object
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    await response.json()
+    .then(data => data.exists)
+    .then (cb);
+
+  }
+  userAction();
+  //   let x;
+  //   reply.then(data => x=data.exists)
+
+  //   return x;
+  // }
+
+  //   try {
+  //      let x =  await response.json();
+  //   }
+  //   catch {
+  //     return x;
+  //   }
+  // }
+  // return userAction();
+
+  // let ex = [];
+
+  // fetch('http://localhost:3000/api/nimiolemassa/', {
+  //   method: 'POST',
+  //   body: `{"name":"${name}"}`,
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   }
+  // })
+  // .then(response => response.json())
+  // // .then(data => exists = ( data.exists ))
+  // .then(data => { ex.push(data.exists) } )
+  // // .then(data => console.log(data.exists))
+  // .catch((error) => {
+  //     console.error('Error:', error);
+  //   });
+  // console.log(ex[0]);
+  
+  // return exists;
+}
 
 
-// *** tästä tästä
+Code.confirmQuestion = () => {
+  if (tarkistaTallennusNimi()) {
+    // Code.loadSavedProgram(id);
+  }
+  else {
+    document.getElementById("lataus_varmistus").style.width = "100%";
+    Code.bindClick('lataus_varmistus_yes', () => { document.getElementById("lataus_varmistus").style.width = "0%"; Code.loadSavedProgram(id); });
+    Code.bindClick('lataus_varmistus_cancel', () => { document.getElementById("lataus_varmistus").style.width = "0%"; });
+    Code.bindClick('lataus_varmistus_close', () => { document.getElementById("lataus_varmistus").style.width = "0%"; });
+  }
+}
 
 // oma
 Code.saveXML = id => {
@@ -764,7 +797,7 @@ Code.saveXML = id => {
   let myBody = `{"nimi":"${nimi}", "xml":"${xml}"}`;
 
   const userAction = async () => {
-    const response = await fetch(`http://localhost:${PORT}/api/saveXML3/${id}`, {
+    const response = await fetch(`http://localhost:${PORT}/api/tallenna/${id}`, {
       method: 'POST',
       body: myBody, // string or object
       headers: {
@@ -775,8 +808,6 @@ Code.saveXML = id => {
   userAction()
 };
 
-
-}
 
 // oma
 Code.lataaListaTallennetuista = () => {
@@ -789,63 +820,61 @@ Code.lataaListaTallennetuista = () => {
 
     ohjelmat.sort( (a, b) => {return b["muokattu"] > a["muokattu"]} );
 
-
     for (let o of ohjelmat) {
       let options = {
         year: 'numeric', month: 'numeric', day: 'numeric',
         hour: 'numeric', minute: 'numeric', 
         timeZone: 'Europe/Helsinki'
       };
-        // const muokattu = o["muokattu"].replace("T", " ");
-        const muokattu = new Date(o["muokattu"]).toLocaleDateString('fi-FI', options);
-        // ohjelmalista += '<a href="#">' + o["nimi"] + '</a>';
-        ohjelmalista += `<a href="#">${o["nimi"]} - ${muokattu}</a>`;
+      const muokattu = new Date(o["muokattu"]).toLocaleDateString('fi-FI', options);
+      ohjelmalista += `<a href="#" id="load-prog-id-${o.id}">${o.nimi} - ${muokattu}</a>`;
     }
-
     document.getElementById("ohjelmalista").innerHTML = ohjelmalista;
-    // document.getElementById("lataus_valikko").style.width = "100%"; 
-
-    // Code.workspace.clear();
-    // Code.loadBlocks(xml);
+    for (let o of document.getElementById('ohjelmalista').childNodes) {
+      Code.bindClick(o.id, () => Code.confirmLoad(o.id.replace('load-prog-id-', '')));      
+    }
+    
+    document.getElementById("lataus_valikko").style.width = "100%"; 
+    Code.bindClick('valikkoKiinni_2', () => { document.getElementById("lataus_valikko").style.width = "0%"; });
   }
 
   userAction();
 }
 
 
+Code.confirmLoad = id => {
+  if (Code.workspace.getAllBlocks(false).length < 2) {
+    Code.loadSavedProgram(id);
+  }
+  else {
+    document.getElementById("lataus_varmistus").style.width = "100%";
+    Code.bindClick('lataus_varmistus_yes', () => { document.getElementById("lataus_varmistus").style.width = "0%"; Code.loadSavedProgram(id); });
+    Code.bindClick('lataus_varmistus_cancel', () => { document.getElementById("lataus_varmistus").style.width = "0%"; });
+    Code.bindClick('lataus_varmistus_close', () => { document.getElementById("lataus_varmistus").style.width = "0%"; });
+  }
+}
 
-// oma
-Code.loadXML = function() {
-
-  const id = document.getElementById('saveName').value
-
+// oma - after confirmLoad
+Code.loadSavedProgram = id => {
+  if (id === 0) {
+    console.log('Ladattavan ohjelman id === 0.');
+    
+    return;
+  }
   const userAction = async () => {
-    const response = await fetch('http://localhost:3000/api/saveXML2/' + id);
-    const xml = await response.text();
+    const response = await fetch('http://localhost:3000/api/ohjelmat/' + id);
+    const program = await response.json();
+    let xml = program.xml.replace(/'/g, '"');
     Code.workspace.clear();
     Code.loadBlocks(xml);
-  }
-
-  userAction()
-
-};
-
-// oma
-Code.loadSaves = () => {
-
-  const userAction = async () => {
-    const response = await fetch('http://localhost:3000/api/saveXML3/');
-    const list = await response.text();
-    document.getElementById('saves').innerHTML = '<option disabled selected value></option>' + list;
+    document.getElementById("lataus_varmistus").style.width = "0%";
+    document.getElementById("lataus_valikko").style.width = "0%";
+    document.getElementById("valikko").style.width = "0%";
+    // workspace.updateToolbox();
   }
   userAction()
 }
 
-Code.selectSave = () => {
-  let e = document.getElementById('saves');
-  document.getElementById('saveName').value = e.options[e.selectedIndex].value;
-
-}
 
 /**
  * Discard all blocks from the workspace.
@@ -982,4 +1011,68 @@ window.addEventListener('load', Code.init);
 
 //   // tauhka 2
 // }
+
+//  tämä on 'robottikomento' on testaukseen
+// socket.on('robottikomento', msg => {
+//   // if kommnetoitu pois testin vuoksi
+//   // if (msg == 'komento_valmis' && ohjelma_suorituksessa && !tauko)
+//     console.log("komento_valmis viesti saatu Nodesta");
+//     emittoiSeuraavaKomento();
+//     // console.log(ohjelma_suorituksessa);
+// });
+
+
+// dfgdfgdfgfdoma - lataa lista tallennetuista käyttäjäohjelmista
+// Code.loadSave = () => {
+//   const userAction = async () => {
+//     const response = await fetch('http://localhost:3000/api/saveXML3/');
+//     const list = await response.text();
+//     document.getElementById('saves').innerHTML = '<option disabled selected value></option>' + list;
+//   }
+//   userAction()
+// }
+
+
+// // oma
+// Code.loadXML = function() {
+
+//   const id = document.getElementById('saveName').value
+
+//   const userAction = async () => {
+//     const response = await fetch('http://localhost:3000/api/saveXML2/' + id);
+//     const xml = await response.text();
+//     Code.workspace.clear();
+//     Code.loadBlocks(xml);
+//   }
+
+//   userAction()
+
+// };
+
+
+
+
+
+
+[...document.getElementsByName("select")].map(checkbox => checkbox.addEventListener("click", () => { console.log(checkbox.id, checkbox.checked) }));
+
+document.getElementsByName("select").forEach(checkbox => checkbox.addEventListener("click", () => { console.log(checkbox.id, checkbox.checked) }));
+
+[...document.getElementsByName("valinta")].map(tsekboksi => tsekboksi.addEventListener('click') )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
