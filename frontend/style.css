@@ -214,6 +214,10 @@ button {
   transition: 0.1s;
 }
 
+.overlay input:invalid {
+  background-color: #ff9292;
+}
+
 .overlay a:hover, .overlay a:focus {
   color: #f1f1f1;
 }

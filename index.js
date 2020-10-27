@@ -102,12 +102,12 @@ app.get('/api/nxt', (req, res) => {
 
 const haeSeuraavaVapaaId = () => {
     const fs = require('fs');
-    return 1 +
+    return 1 + 
         fs.readdirSync('./tallennukset/')
         .map(file => file.replace('.json', ''))
         .filter(file => Number(file))
         .map(file => Number(file))
-        .reduce( (max, next) => { return max > next ? max : next } );
+        .reduce( (max , next) => { return max > next ? max : next }, 0 );
 };
 
 const tallennaOhjelma = (ohjelma, id) => {
