@@ -232,7 +232,7 @@ Blockly.Blocks['open_hand'] = {
         ['oikea', 'right_arm'],
         ['vasen', 'left_arm']
       ]), 'side')
-      .appendField(" koura (vai käsi?)")
+      .appendField(" koura")
       .setAlign(Blockly.ALIGN_RIGHT);
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
@@ -260,7 +260,7 @@ Blockly.Blocks['close_hand'] = {
         ['oikea', 'right_arm'],
         ['vasen', 'left_arm']
       ]), 'side')
-      .appendField(" koura (vai käsi?)")
+      .appendField(" koura")
       .setAlign(Blockly.ALIGN_RIGHT);
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
@@ -275,6 +275,44 @@ Blockly.JavaScript['close_hand'] = block => {
   const socket_event_name = "close_hand";
   const socket_emit_object = {
     handle: block.getFieldValue('side')
+  };
+  return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
+};
+
+Blockly.Blocks['arm_pose'] = {
+  init: function() {
+    this.appendDummyInput()
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Liikuta ")
+      .appendField(new Blockly.FieldDropdown([
+        ['oikea', 'right_arm'],
+        ['vasen', 'left_arm']
+      ]), 'side')
+      .appendField(" käsi ")
+      .setAlign(Blockly.ALIGN_RIGHT);
+    this.appendDummyInput()
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField(new Blockly.FieldDropdown([
+        ['eteen', 'front'],
+        ['ylös', 'up'],
+        ['sivulle', 'side'],
+        ['alas', 'return']
+      ]), 'position')
+      .setAlign(Blockly.ALIGN_RIGHT);
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(212);
+    this.setTooltip("");
+    this.setHelpUrl("");
+  }
+};
+// arm_pose, {hand: ”käsi”, pose: ”asento”}
+Blockly.JavaScript['arm_pose'] = block => {
+  const socket_event_name = "arm_pose";
+  const socket_emit_object = {
+    hand: block.getFieldValue('side'),
+    pose: block.getFieldValue('position')
   };
   return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;
 };
@@ -753,6 +791,7 @@ Blockly.Blocks['liikuta_kasi_ylos'] = {
    this.setHelpUrl("");
     }
 };
+
 
 
 // Pudota pallo pisteeseen         (oikea / vasen + a / b / c) (ennalta määrättyjä pisteitä robotin rungossa ja/tai ilmassa)

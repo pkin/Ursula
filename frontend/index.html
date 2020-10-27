@@ -38,25 +38,30 @@
         <span class="valikkopainike" id="valikkoAuki">&#9776; Valikko</span>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <button id="donetestinappi">Pyydä "done"</button>
+        <button id="testinappi">test</button>
       </td>
       <td>
 
         <div id="lataus_valikko" class="overlay">
           <a href="javascript:void(0)" id="valikkoKiinni_2" class="closebtn">&times;</a>
           <div id="ohjelmalista" class="overlay-content">
-            
-            <!-- <a href="#" disabled>Ohjelman nimi</a>
-            <input value="XYZ" id="saveName">
-            <a href="#">____</a>
-            <br>
-            <a id="saveButton" href="#">Tallenna</a>
-            <a id="testLista" href="#">Listaa ohjelmat</a>
-            <a href="#">Lataa</a>
-            <a href="#">Tiedot</a>
-            <a href="#">Info</a> -->
           </div>
         </div>
-
+        <div id="lataus_varmistus" class="overlay">
+          <a href="javascript:void(0)" id="lataus_varmistus_close" class="closebtn">&times;</a>
+          <div id="lataus_varmistus_teksti" class="overlay-content">
+            <p>Lataaminen korvaa avoinna olevan ohjelman. Jatketaanko?</p>
+            <br>
+            <a href="#" id='lataus_varmistus_yes' disabled>Lataa</a>
+            <br>
+            <br>
+            <a href="#" id='lataus_varmistus_cancel' disabled>Peruuta</a>
+          </div>
+        </div>
+        <div id="varmistus" class="overlay">
+          <a href="javascript:void(0)" id="varmistus_close" class="closebtn">&times;</a>
+          <div id="varmistus_teksti" class="overlay-content"></div>
+        </div>
         <div id="valikko" class="overlay">
           <a href="javascript:void(0)" id="valikkoKiinni" class="closebtn">&times;</a>
           <div class="overlay-content">
@@ -65,8 +70,7 @@
             <a href="#">____</a>
             <br>
             <a id="saveButton" href="#">Tallenna</a>
-            <a id="testLista" href="#">Listaa ohjelmat</a>
-            <a href="#">Lataa</a>
+            <a id="testLista" href="#">Lataa</a>
             <a href="#">Tiedot</a>
           </div>
         </div>
@@ -445,7 +449,7 @@
     <!-- <category name="Robot" colour="%{BKY_LOOPS_HUE}" custom="ROBOT_COMMANDS" >
       <block type="robot_start"></block>
     </category> -->
-    <category name="Robotti" colour="%{BKY_LOOPS_HUE}" expanded="true">
+    <category name="Robotti" colour="%{BKY_LOOPS_HUE}" expanded="false">
       <block type="relative_move">
         <value name="move_angle">
           <shadow type="math_number">
@@ -485,6 +489,8 @@
       <block type="open_hand">
       </block>     
       <block type="close_hand">
+      </block>     
+      <block type="arm_pose">
       </block>     
       <block type="pick_up_color_ball">
       </block> 
