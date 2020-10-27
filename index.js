@@ -20,7 +20,7 @@ app.get('/api/ohjelmat', (req, res) => {
     try {
         ohjelmat = lataaOhjelmat();
     }
-    catch {
+    catch (err) {
         console.log("Ongelma ohjelmien haussa!");
         return undefined;
     }
