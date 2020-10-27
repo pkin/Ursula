@@ -29,8 +29,9 @@
 var Code = {};
 
 /**
- * PORT of backend -- huom: jotain vielä kovakoodattu
+ * PORT and HOST in the backend
  */
+const HOST = 'localhost';
 const PORT = 3000;
 
 /**
@@ -705,7 +706,7 @@ Code.runJS = function() {
 Code.checkNameExists = (name, cb) => {
 
   const userAction = async () => {
-    const response = await fetch('http://localhost:3000/api/nimiolemassa/', {
+    const response = await fetch(`http://${HOST}:${PORT}/api/nimiolemassa/`, {
       method: 'POST',
       body: `{"name":"${name}"}`, // string or object
       headers: {
@@ -797,7 +798,7 @@ Code.saveXML = id => {
   let myBody = `{"nimi":"${nimi}", "xml":"${xml}"}`;
 
   const userAction = async () => {
-    const response = await fetch(`http://localhost:${PORT}/api/tallenna/${id}`, {
+    const response = await fetch(`http://${HOST}:${PORT}/api/tallenna/${id}`, {
       method: 'POST',
       body: myBody, // string or object
       headers: {
@@ -813,7 +814,7 @@ Code.saveXML = id => {
 Code.lataaListaTallennetuista = () => {
 
    const userAction = async () => {
-    const response = await fetch('http://localhost:3000/api/ohjelmat/');
+    const response = await fetch(`http://${HOST}:${PORT}/api/ohjelmat/`);
     const ohjelmat = await response.json();
   
     let ohjelmalista = "";
@@ -862,7 +863,7 @@ Code.loadSavedProgram = id => {
     return;
   }
   const userAction = async () => {
-    const response = await fetch('http://localhost:3000/api/ohjelmat/' + id);
+    const response = await fetch(`http://${HOST}:${PORT}/api/ohjelmat/` + id);
     const program = await response.json();
     let xml = program.xml.replace(/'/g, '"');
     Code.workspace.clear();
@@ -1054,11 +1055,11 @@ window.addEventListener('load', Code.init);
 
 
 
-[...document.getElementsByName("select")].map(checkbox => checkbox.addEventListener("click", () => { console.log(checkbox.id, checkbox.checked) }));
+// [...document.getElementsByName("select")].map(checkbox => checkbox.addEventListener("click", () => { console.log(checkbox.id, checkbox.checked) }));
 
-document.getElementsByName("select").forEach(checkbox => checkbox.addEventListener("click", () => { console.log(checkbox.id, checkbox.checked) }));
+// document.getElementsByName("select").forEach(checkbox => checkbox.addEventListener("click", () => { console.log(checkbox.id, checkbox.checked) }));
 
-[...document.getElementsByName("valinta")].map(tsekboksi => tsekboksi.addEventListener('click') )
+// [...document.getElementsByName("valinta")].map(tsekboksi => tsekboksi.addEventListener('click') )
 
 
 
