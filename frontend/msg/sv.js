@@ -1,5 +1,5 @@
 var MSG = {
-  title: "Kod",
+  title: "Ursula / programmering",
   blocks: "Block",
   linkTooltip: "Spara och länka till block.",
   runTooltip: "Kör programmet som definierats av blocken i arbetsytan.",

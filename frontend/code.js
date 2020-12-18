@@ -39,8 +39,8 @@ const PORT = 3000;
  */
 Code.LANGUAGE_NAME = {
   'en': 'English',
-  'fi': 'Finnish',
-  'sv': 'Svenska',
+  'fi': 'suomi',
+  'sv': 'svenska',
 };
 
 /**

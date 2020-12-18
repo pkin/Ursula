@@ -1,5 +1,5 @@
 var MSG = {
-  title: "Code",
+  title: "Ursula / programming",
   blocks: "Blocks",
   linkTooltip: "Save and link to blocks.",
   runTooltip: "Run the program defined by the blocks in the workspace.",
