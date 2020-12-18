@@ -82,20 +82,20 @@ Blockly.Blocks['pick_up_color_ball'] = {
     this.appendDummyInput()
       .setAlign(Blockly.ALIGN_RIGHT)
       .appendField("Poimi ")
-      let field = new Blockly.FieldColour('#ff4040');
+      let field = new Blockly.FieldColour('#ee4444');
       field.setColours(
-        ['#ff4040', '#40ff40', '#4040ff'],
-        ['red', 'green', 'blue']);
-        field.setColumns(3);
+        ['#ee4444', '#44ee44', '#5566ff', '#eeee44'],
+        ['red', 'green', 'blue', 'yellow']);
+        field.setColumns(4);
     this.appendDummyInput()
       .appendField(field, 'COLOUR')
       .appendField(' pallo ');
-    this.appendDummyInput()
-      .appendField(new Blockly.FieldDropdown([
-        ['oikealla', 'right'],
-        ['vasemmalla', 'left']
-      ]), 'pick_ball_hand')
-      .appendField(" kädellä ");
+    // this.appendDummyInput()
+    //   .appendField(new Blockly.FieldDropdown([
+    //     ['oikealla', 'right'],
+    //     ['vasemmalla', 'left']
+    //   ]), 'pick_ball_hand')
+    //   .appendField(" kädellä ");
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -108,13 +108,14 @@ Blockly.Blocks['pick_up_color_ball'] = {
 Blockly.JavaScript['pick_up_color_ball'] = block => {
   let ball_colour = "";
   switch (block.getFieldValue('COLOUR')) {
-    case '#ff4040': ball_colour = "red"; break;
-    case '#40ff40': ball_colour = "green"; break;
-    case '#4040ff': ball_colour = "blue"; break;
+    case '#ee4444': ball_colour = "red"; break;
+    case '#44ee44': ball_colour = "green"; break;
+    case '#5566ff': ball_colour = "blue"; break;
+    case '#eeee44': ball_colour = "yellow"; break;
   }
   const socket_event_name = "pick_up_color_ball";
   const socket_emit_object = {
-    hand: block.getFieldValue('pick_ball_hand'),
+    // hand: block.getFieldValue('pick_ball_hand'),
     ball_color: ball_colour 
   };
   return `robottikomennot.push("${socket_event_name}", ${JSON.stringify(socket_emit_object)});\n`;

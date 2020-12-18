@@ -440,32 +440,10 @@ Code.init = function() {
   Code.bindClick('poistoLista', () => Code.lataaListaTallennetuista('poisto'));
   Code.bindClick('valikkoAuki', () => { document.getElementById("valikko").style.width = "100%"; });
   Code.bindClick('valikkoKiinni', () => { document.getElementById("valikko").style.width = "0%"; });
-  // Code.bindClick('stopButton', Code.stopUserProgram);
   Code.bindClick('stopButton', () => { socket.emit('stop'), Code.stopUserProgram() });
-  
-
-  
-  //Code.bindClick('valikkoKiinni_2', () => { document.getElementById("lataus_valikko").style.width = "0%"; });
   // Code.bindClick('donetestinappi', () => { socket.emit('wait', { duration: 0 })});
   
-  
-
-
-  
-  
-  // Code.bindClick('donetestinappi', () => { console.log(Date.now() + " done"); emitDone(); } );
-  // Code.bindClick('donetestinappi', () => { console.log(Date.now() + " done");  } );
-  // Code.bindClick('donetestinappi', () => { socket.emit("ask_for_done"); } );
-  // Code.bindClick('donetestinappi',  socket.emit("done")  );
-  // Code.bindClick('loadButton', Code.loadXML);
-  // Code.bindClick('saves', Code.loadSaves);
-  
-  // Code.bindClick('closeLoadOverlay', () => { document.getElementById('overlay').hidden = true });
-
-  // testaamiseen valiiksi avoinna olevia valikoita
-  // Code.lataaListaTallennetuista();
   Code.confirmLoad(0);
-
 
   // Disable the link button if page isn't backed by App Engine storage.
   var linkButton = document.getElementById('linkButton');
@@ -585,65 +563,8 @@ const emittoiSeuraavaKomento = () => {
     console.log(socket_event_name, socket_emit_object);
   }
 
-  // if (!ohjelma_suorituksessa && tauko)
-  //   return;
-  // let seuraava = robottikomennot.shift();
- 
-  // if (seuraava === undefined) {
-  // if (!seuraava) {
-  //   socket.emit('robottikomento', 'loppu');
-  //   ohjelma_suorituksessa = false;
-  //   console.log('ohjelma loppu');
-  // }
-  // else {
-  //   console.log(seuraava);
-  //   socket.emit(seuraava[0], seuraava[1]);
-    // seuraava();
-    // const komento = seuraava.split(",");
-    // console.log(komento);
-    // console.log(komento[0], komento[1]);
-    // socket.emit(komento[0], komento[1], "hoihoi" );
-  // }
+
 }
-
-
-
-
-Code.socketCallbackTest = nimi => {
-
-  socket.emit('getCounter', nimi, function(error, counter) {
-    console.log('Counter is', counter);
-  });
-
-  // socket.emit('tarkista_nimi', 'do you think so?', function (answer) {});
-  // console.log(answer);
-}
-
-
-// Code.näytäTallennetutOhjelmat = () => {
-  
-//   Code.lataaListaTallennetuista();
-
-
-//   // console.log(ohjelmaluettelo);
-
-//   // document.getElementById("ohjelmalista").innerHTML = '<a href="#">dickbutt2</a>';
-
-  
-  
-//   // document.getElementById("lista_ohjelmista").value = lista_ohjelmista;
-// }
-
-// {
-// const emittoiTauko = () => {
-//   socket.emit('robottikomento', 'tauko');
-//   console.log('ohjelman suorituksessa tauko');
-// }
-
-// const emittoiStop = () => {  // ei pelkästää emittoi
-//   socket.emit('robottikomento', 'stop');
-//   console.log('ohjelma ajo lopetettu');
-// }
 
 
 /**
@@ -697,125 +618,21 @@ Code.runStopButtonSwitch = () => {
 
 
 
-
-
-
-// Code.tarkistaTallennusNimi = nimi => {
-  //   const userAction = async () => {
-    //     const response = await fetch(`http://localhost:${PORT}/api/saveXML3/${id}`, {
-      //       method: 'POST',
-      //       body: myBody, // string or object
-      //       headers: {
-        //         'Content-Type': 'application/json'
-        //       }
-        //     });
-        //   }
-        //   userAction()
-        //   return false;
-        // }
-        
-// tarkista onko ohjelman nimi jo tallennettu palvelimen tallennukset-hakemistoon
-// Code.tarkistaTallennusNimi = nimi => {
-//   const userAction = async () => {
-//     const response = await fetch('http://localhost:3000/api/tarkista/' + nimi);
-//     const olemassa = await response.text();
-//   }
-//   userAction();  
-// }
-
-
-// callback kokeilua
-
-const xyz = bool => {
-  console.log(bool);
-  // 1) tallennaoverlay freeze
-  // 2) 
-  document.getElementById("valikko").style.width = "50%";
-}
-
-// Code.bindClick('testinappi', () => { Code.checkNameExists('dsfsdf', xyz) } );
-
-
-Code.checkNameExists = (name, callback) => {
-
-  const userAction = async () => {
-    const response = await fetch(`http://${HOST}:${PORT}/api/nimiolemassa/`, {
-      method: 'POST',
-      body: `{"name":"${name}"}`, // string or object
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    await response.json()
-    .then(data => data.exists)
-    .then (callback);
-
-  }
-  userAction();
-  //   let x;
-  //   reply.then(data => x=data.exists)
-
-  //   return x;
-  // }
-
-  //   try {
-  //      let x =  await response.json();
-  //   }
-  //   catch {
-  //     return x;
-  //   }
-  // }
-  // return userAction();
-
-  // let ex = [];
-
-  // fetch('http://localhost:3000/api/nimiolemassa/', {
-  //   method: 'POST',
-  //   body: `{"name":"${name}"}`,
-  //   headers: {
-  //     'Content-Type': 'application/json'
-  //   }
-  // })
-  // .then(response => response.json())
-  // // .then(data => exists = ( data.exists ))
-  // .then(data => { ex.push(data.exists) } )
-  // // .then(data => console.log(data.exists))
-  // .catch((error) => {
-  //     console.error('Error:', error);
-  //   });
-  // console.log(ex[0]);
-  
-  // return exists;
-}
-
-
-// Code.confirmQuestion = () => {
-//   if (tarkistaTallennusNimi()) {
-//     // Code.loadSavedProgram(id);
-//   }
-//   else {
-//     document.getElementById("lataus_varmistus").style.width = "100%";
-//     Code.bindClick('lataus_varmistus_yes', () => { document.getElementById("lataus_varmistus").style.width = "0%"; Code.loadSavedProgram(id); });
-//     Code.bindClick('lataus_varmistus_cancel', () => { document.getElementById("lataus_varmistus").style.width = "0%"; });
-//     Code.bindClick('lataus_varmistus_close', () => { document.getElementById("lataus_varmistus").style.width = "0%"; });
-//   }
-// }
-
 // oma
 Code.saveXML = id => {
 
-  if (false) {
-    if (id === 0) {
-      // ohjelma on uusi --> id = get uusi id + 1
-      // id = 
-    }
+  // if (false) {
+  //   if (id === 0) {
+  //     // ohjelma on uusi --> id = get uusi id + 1
+  //     // id = 
+  //   }
 
-    const nnimi = document.getElementById('saveName').value;
-    // console.log(Code.tarkistaTallennusNimi(nnimi));
-    Code.tarkistaTallennusNimi(nnimi);
-    console.log('-----');
-    return;
-  }
+  //   const nnimi = document.getElementById('saveName').value;
+  //   // console.log(Code.tarkistaTallennusNimi(nnimi));
+  //   Code.tarkistaTallennusNimi(nnimi);
+  //   console.log('-----');
+  //   return;
+  // }
 
   let nimi = document.getElementById('saveName').value;
   if (nimi.length < 1) {
@@ -898,9 +715,6 @@ Code.lataaListaTallennetuista = tyyppi => {
 
 
 Code.confirmLoad = id => {
-  // if (Code.workspace.getAllBlocks(false).length < 2) {
-  //   Code.loadSavedProgram(id);
-  // }
   if (id > 0) {
     document.getElementById("lataus_varmistus").style.width = "100%";
     Code.bindClickOnce('lataus_varmistus_yes', () => { document.getElementById("lataus_varmistus").style.width = "0%"; Code.stopUserProgram(); Code.loadSavedProgram(id); });
@@ -925,7 +739,6 @@ Code.loadSavedProgram = id => {
     document.getElementById("lataus_varmistus").style.width = "0%";
     document.getElementById("lataus_valikko").style.width = "0%";
     document.getElementById("valikko").style.width = "0%";
-    // Code.bindClick('lataus_varmistus_yes');
     // workspace.updateToolbox();
   }
   userAction()
@@ -980,180 +793,43 @@ window.addEventListener('load', Code.init);
 
 
 
-
-// ***** VANHAA TAUHKAA - luultavasti ei tarvita ******
-
-
-  // tauhka 1
-
-    // *** ei käytössä, koska siirryimme socket.io:hon
-    // try {
-    //   // Code.robotCommandLoop(); // uusi koe
-    //   // Code.sendRobotCommandsToBackend(); // vanha
-    //   // Code.socketTest(); // yhteyskoe
-    //   // robottikomennot = [];
-    // } catch (e) {
-    //   alert(MSG['badCode'].replace('%1', e));
-    // }
-
-
-
-  // tauhka 2
-    // const userAction = async () => {
-    //   const response = await fetch('http://localhost:3000/api/testFlag/');
-    //   const robot_command = await response.text();
-    //   console.log(robot_command);
-    // }
-    // userAction()
-
-
-// Code.sendRobotCommandsToBackend = () => {
-
-  //   console.log(robottikomennot);
-    
-  //   let myBody = '{"komennot": "' + robottikomennot + '"}';
-  //   console.log(myBody);
-  
-  //   const userAction = async () => {
-  //     const response = await fetch('http://localhost:' + PORT + '/api/postRobotCommands/', {
-  //       method: 'POST',
-  //       body: myBody, // string or object
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       }
-  //     });
-  //   }
-  
-  //   userAction();
-    
-      // }
-
-
-
-
-// Code.socket.on("flag", (data) => {
-//   socket.emit('robot_command', robottikomennot.shift());
-// });
-
-
-// Code.robotCommandLoop = () => {
-
-//   while (robottikomennot.length > 0) {
-
-//     socket.on("flag", (data) => {
-//       socket.emit('robot_command', robottikomennot.shift());
-//     });
-  
-//   }
-// }
-
-// Code.robotCommandLoop = () => {
-
-//   let can_continue = false;
-
-//   while (robottikomennot.length > 0) {
-
-//     socket.on("flag", (data) => {
-//       can_continue = true; 
-//     });
-  
-//     socket.emit('robot_command', robottikomennot.shift());
-  
-//   }
-
-// }
-
-// yhteyskoe
-// Code.socketTest = () => {
-//   socket.emit('robot_command', "robokomento tässä hei");
-// }
-
-
-
-
-
-// const runTestCommand = () => {
-
-//   if (robottikomennot.length > 0) {
-
-//     document.getElementById("testiemittori").hidden = false;
-//   } else {
-//     console.log("ohjelma loppu");    
-//     document.getElementById("testiemittori").hidden = true;
-
-//   }
-// }
-
-
-// // oma
-// Code.testFlag = () => {
-
-//   fetch('http://localhost:3000/api/testFlag/');
-
-//   // tauhka 2
-// }
-
-//  tämä on 'robottikomento' on testaukseen
-// socket.on('robottikomento', msg => {
-//   // if kommnetoitu pois testin vuoksi
-//   // if (msg == 'komento_valmis' && ohjelma_suorituksessa && !tauko)
-//     console.log("komento_valmis viesti saatu Nodesta");
-//     emittoiSeuraavaKomento();
-//     // console.log(ohjelma_suorituksessa);
-// });
-
-
-// dfgdfgdfgfdoma - lataa lista tallennetuista käyttäjäohjelmista
-// Code.loadSave = () => {
-//   const userAction = async () => {
-//     const response = await fetch('http://localhost:3000/api/saveXML3/');
-//     const list = await response.text();
-//     document.getElementById('saves').innerHTML = '<option disabled selected value></option>' + list;
-//   }
-//   userAction()
-// }
-
-
-// // oma
-// Code.loadXML = function() {
-
-//   const id = document.getElementById('saveName').value
-
-//   const userAction = async () => {
-//     const response = await fetch('http://localhost:3000/api/saveXML2/' + id);
-//     const xml = await response.text();
-//     Code.workspace.clear();
-//     Code.loadBlocks(xml);
-//   }
-
-//   userAction()
-
-// };
-
-
-
-
-
-
-// [...document.getElementsByName("select")].map(checkbox => checkbox.addEventListener("click", () => { console.log(checkbox.id, checkbox.checked) }));
-
-// document.getElementsByName("select").forEach(checkbox => checkbox.addEventListener("click", () => { console.log(checkbox.id, checkbox.checked) }));
-
-// [...document.getElementsByName("valinta")].map(tsekboksi => tsekboksi.addEventListener('click') )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// *******************************************************
+
+// callback kokeilua
+const xyz = bool => {
+  console.log(bool);
+  // 1) tallennaoverlay freeze
+  // 2) 
+  document.getElementById("valikko").style.width = "50%";
+}
+
+// callback kokeilua
+Code.checkNameExists = (name, callback) => {
+  const userAction = async () => {
+    const response = await fetch(`http://${HOST}:${PORT}/api/nimiolemassa/`, {
+      method: 'POST',
+      body: `{"name":"${name}"}`, // string or object
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    await response.json()
+    .then(data => data.exists)
+    .then (callback);
+
+  }
+  userAction();
+
+}
+
+
+
+Code.socketCallbackTest = nimi => {
+
+  socket.emit('getCounter', nimi, function(error, counter) {
+    console.log('Counter is', counter);
+  });
+
+  // socket.emit('tarkista_nimi', 'do you think so?', function (answer) {});
+  // console.log(answer);
+}
