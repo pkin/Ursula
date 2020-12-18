@@ -442,6 +442,8 @@ Code.init = function() {
   Code.bindClick('valikkoKiinni', () => { document.getElementById("valikko").style.width = "0%"; });
   Code.bindClick('stopButton', () => { socket.emit('stop'), Code.stopUserProgram() });
   // Code.bindClick('donetestinappi', () => { socket.emit('wait', { duration: 0 })});
+  Code.bindClick('tietopainike', () => { document.getElementById("tietovalikko").style.width = "100%"; });
+  Code.bindClick('tietovalikkokiinni', () => { document.getElementById("tietovalikko").style.width = "0%"; });
   
   Code.confirmLoad(0);
 
