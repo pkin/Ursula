@@ -307,7 +307,7 @@ Blockly.Blocks['arm_pose'] = {
     this.setHelpUrl("");
   }
 };
-// arm_pose, {hand: ”käsi”, pose: ”asento”}
+
 Blockly.JavaScript['arm_pose'] = block => {
   const socket_event_name = "arm_pose";
   const socket_emit_object = {

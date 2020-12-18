@@ -35,6 +35,14 @@ button.primary {
 button.primary>img {
   opacity: 1;
 }
+button.stopbutton {
+  border: 1px solid #c13;
+  background-color: #c13;
+  color: #fff;
+}
+button.stopbutton>img {
+  opacity: 1;
+}
 button>img {
   opacity: 0.6;
   vertical-align: text-bottom;
@@ -69,15 +77,18 @@ h1 {
 #tabRow>td {
   border: 1px solid #ccc;
   border-bottom: none;
+  padding-top: 11px;
 }
 td.tabon {
   border-bottom-color: #ddd !important;
   background-color: #ddd;
   padding: 5px 19px;
+  padding-top: 7px;
 }
 td.taboff {
   cursor: pointer;
   padding: 5px 19px;
+  padding-top: 7px;
 }
 td.taboff:hover {
   background-color: #eee;
@@ -95,6 +106,8 @@ td.tabmax {
   padding-left: 10px;
   padding-right: 10px;
   text-align: right;
+  padding-top: 7px;
+  padding-bottom: 7px;
 }
 html[dir=rtl] td.tabmax {
   text-align: left;
@@ -162,18 +175,10 @@ button {
 .run {
   background-position: -42px 0px;
 }
-#title {
-  padding: 1px 10px;
-  margin: 1px 5px;
+.stop {
+  background-position: -63px 0px;
 }
 
-
-.valikkopainike {
-  padding: 1px 10px;
-  margin: 1px 5px;
-  font-size:20px;
-  cursor:pointer;
-}
 
 .overlay {
   height: 100%;
@@ -183,14 +188,14 @@ button {
   top: 0;
   left: 0;
   background-color: rgb(0,0,0);
-  background-color: rgba(0,0,22, 0.9);
+  background-color: rgba(0,0,22, 0.97);
   overflow-x: hidden;
   transition: 0.1s;
 }
 
 .overlay-content {
   position: relative;
-  top: 25%;
+  top: 15%;
   width: 100%;
   text-align: center;
   margin-top: 30px;
@@ -224,8 +229,15 @@ button {
 
 .overlay .closebtn {
   position: absolute;
-  top: 20px;
-  right: 45px;
+  top: 25px;
+  right: 55px;
+  font-size: 50px;
+}
+
+.overlay .header {
+  position: absolute;
+  top: 30px;
+  left: 55px;
   font-size: 50px;
 }
 
@@ -242,7 +254,24 @@ button {
   z-index: 223;
 }
 
+.overlay-header {
+  z-index: 223;
+  position: relative;
+  top: 25%;
+  width: 100%;
+  text-align: center;
+  margin-top: 30px;
+}
+
 #lataus_varmistus {
+  z-index: 224;
+}
+
+#poistovalikko {
+  z-index: 223;
+}
+
+#poistovarmistus {
   z-index: 224;
 }
 
@@ -251,4 +280,48 @@ button {
   margin: 2px;
   border: 1px green solid;
   background-color: lightgreen;
+}
+
+.highlight {
+  font-size: larger;
+  color:#aef;
+}
+
+.warningred {
+  color: salmon;
+}
+
+.okwhite {
+  color:#eef;
+}
+
+.moddate {
+  font-size:70%;
+  color: #668;
+}
+
+.topbar td {
+  background-color: #778;
+}
+
+.valikkopainike {
+  color: white;
+  padding: 1px 10px;
+  margin: 1px 5px;
+  font-size:20px;
+  cursor:pointer;
+  padding-left: 15px;
+}
+
+#title {
+  font-size: larger;
+  padding: 1px 10px;
+  margin: 1px 5px;
+  color: white;
+  text-shadow: 1px 1px 2px black, 0 0 8px #556, 0 0 4px #335;
+}
+
+td.taboff, td.tabon{
+  font-size: 109%;
+  padding-top: 10px;
 }

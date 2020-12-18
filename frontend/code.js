@@ -163,6 +163,15 @@ Code.bindClick = function(el, func) {
   el.addEventListener('touchend', func, true);
 };
 
+// oma - oli pakko tehdä, jotta anonyymit eventlistenerit poistuvat
+Code.bindClickOnce = function(el, func) {
+  if (typeof el == 'string') {
+    el = document.getElementById(el);
+  }
+  el.addEventListener('click', func, { once: true });
+  el.addEventListener('touchend', func, { once: true });
+};
+
 Code.bindChange = function(el, func) {
   if (typeof el == 'string') {
     el = document.getElementById(el);
@@ -427,28 +436,21 @@ Code.init = function() {
 
 // Omien nappien sidonta - button bindings
   Code.bindClick('saveButton', () => Code.saveXML(Code.ohjelmanID));
-  Code.bindClick('testLista', Code.lataaListaTallennetuista);
+  Code.bindClick('latausLista', () => Code.lataaListaTallennetuista('lataus'));
+  Code.bindClick('poistoLista', () => Code.lataaListaTallennetuista('poisto'));
   Code.bindClick('valikkoAuki', () => { document.getElementById("valikko").style.width = "100%"; });
   Code.bindClick('valikkoKiinni', () => { document.getElementById("valikko").style.width = "0%"; });
+  // Code.bindClick('stopButton', Code.stopUserProgram);
+  Code.bindClick('stopButton', () => { socket.emit('stop'), Code.stopUserProgram() });
   
 
   
   //Code.bindClick('valikkoKiinni_2', () => { document.getElementById("lataus_valikko").style.width = "0%"; });
-  Code.bindClick('donetestinappi', () => { socket.emit('wait', { duration: 0 })});
+  // Code.bindClick('donetestinappi', () => { socket.emit('wait', { duration: 0 })});
   
   
 
 
-
-  const xyz = bool => {
-    console.log(bool);
-    // 1) tallennaoverlay freeze
-    // 2) 
-    document.getElementById("valikko").style.width = "50%";
-  }
-
-  Code.bindClick('testinappi', () => { Code.checkNameExists('dsfsdf', xyz) } );
-  
   
   
   // Code.bindClick('donetestinappi', () => { console.log(Date.now() + " done"); emitDone(); } );
@@ -550,8 +552,6 @@ Code.onkoNimeäMuutettuLataamisenJälkeen = false;
 Code.ohjelmanID = 0;
 
 
-
-
 socket.on('connect', () => {
   console.log('connected to a server (socket.io)');
   socket.on('disconnect', () => {
@@ -560,7 +560,13 @@ socket.on('connect', () => {
 });
 
 socket.on("done", msg => {
-  console.log('Saatiin "done" palvelimelta');
+  console.log('Vastaanotettiin "done"');
+  emittoiSeuraavaKomento();
+});
+
+socket.on("stop", msg => {
+  console.log('Käsketty "stop"');
+  robottikomennot.length = 0;
   emittoiSeuraavaKomento();
 });
 
@@ -572,8 +578,7 @@ const emittoiSeuraavaKomento = () => {
   if (!socket_event_name && !socket_emit_object) {
     socket.emit("finished");
     ohjelma_suorituksessa ? console.log('Ohjelman suoritus loppui!') : console.log('Ohjelma ei ole käynnissä.') ;
-    ohjelma_suorituksessa = false;
-    robottikomennot.length = 0;
+    Code.stopUserProgram();
   }
   else if (ohjelma_suorituksessa) {
     socket.emit(socket_event_name, socket_emit_object);
@@ -601,7 +606,7 @@ const emittoiSeuraavaKomento = () => {
   // }
 }
 
-// 
+
 
 
 Code.socketCallbackTest = nimi => {
@@ -665,15 +670,30 @@ Code.runJS = function() {
   ohjelma_suorituksessa = true;
   console.log("*** ohjelma käynnistetty ***");
   emittoiSeuraavaKomento();
-
-  // tauhka 1
+  Code.runStopButtonSwitch();
 };
 
+Code.stopUserProgram = () => {
+  ohjelma_suorituksessa = false;
+  robottikomennot.length = 0;
+  Code.runStopButtonSwitch();
+}
 
 
-
-
-
+Code.runStopButtonSwitch = () => {
+  if (ohjelma_suorituksessa) {
+    document.getElementById("runButton").classList.remove("primary");
+    document.getElementById("runButton").disabled = true; 
+    document.getElementById("stopButton").classList.add("stopbutton");
+    document.getElementById("stopButton").disabled = false; 
+  }
+  else {
+    document.getElementById("runButton").classList.add("primary");
+    document.getElementById("runButton").disabled = false; 
+    document.getElementById("stopButton").classList.remove("stopbutton");
+    document.getElementById("stopButton").disabled = true; 
+  }
+}
 
 
 
@@ -703,7 +723,20 @@ Code.runJS = function() {
 //   userAction();  
 // }
 
-Code.checkNameExists = (name, cb) => {
+
+// callback kokeilua
+
+const xyz = bool => {
+  console.log(bool);
+  // 1) tallennaoverlay freeze
+  // 2) 
+  document.getElementById("valikko").style.width = "50%";
+}
+
+// Code.bindClick('testinappi', () => { Code.checkNameExists('dsfsdf', xyz) } );
+
+
+Code.checkNameExists = (name, callback) => {
 
   const userAction = async () => {
     const response = await fetch(`http://${HOST}:${PORT}/api/nimiolemassa/`, {
@@ -715,7 +748,7 @@ Code.checkNameExists = (name, cb) => {
     });
     await response.json()
     .then(data => data.exists)
-    .then (cb);
+    .then (callback);
 
   }
   userAction();
@@ -756,17 +789,17 @@ Code.checkNameExists = (name, cb) => {
 }
 
 
-Code.confirmQuestion = () => {
-  if (tarkistaTallennusNimi()) {
-    // Code.loadSavedProgram(id);
-  }
-  else {
-    document.getElementById("lataus_varmistus").style.width = "100%";
-    Code.bindClick('lataus_varmistus_yes', () => { document.getElementById("lataus_varmistus").style.width = "0%"; Code.loadSavedProgram(id); });
-    Code.bindClick('lataus_varmistus_cancel', () => { document.getElementById("lataus_varmistus").style.width = "0%"; });
-    Code.bindClick('lataus_varmistus_close', () => { document.getElementById("lataus_varmistus").style.width = "0%"; });
-  }
-}
+// Code.confirmQuestion = () => {
+//   if (tarkistaTallennusNimi()) {
+//     // Code.loadSavedProgram(id);
+//   }
+//   else {
+//     document.getElementById("lataus_varmistus").style.width = "100%";
+//     Code.bindClick('lataus_varmistus_yes', () => { document.getElementById("lataus_varmistus").style.width = "0%"; Code.loadSavedProgram(id); });
+//     Code.bindClick('lataus_varmistus_cancel', () => { document.getElementById("lataus_varmistus").style.width = "0%"; });
+//     Code.bindClick('lataus_varmistus_close', () => { document.getElementById("lataus_varmistus").style.width = "0%"; });
+//   }
+// }
 
 // oma
 Code.saveXML = id => {
@@ -784,10 +817,14 @@ Code.saveXML = id => {
     return;
   }
 
-  var xmlDom = Blockly.Xml.workspaceToDom(Code.workspace);
-  var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-  let xml = xmlText;
   let nimi = document.getElementById('saveName').value;
+  if (nimi.length < 1) {
+    return;
+  }
+
+  let xmlDom = Blockly.Xml.workspaceToDom(Code.workspace);
+  let xmlText = Blockly.Xml.domToPrettyText(xmlDom);
+  let xml = xmlText;
 
   xml = xml.replace(/"/g, "'");
   xml = xml.replace(/\n/g, " ");
@@ -797,6 +834,8 @@ Code.saveXML = id => {
 
   let myBody = `{"nimi":"${nimi}", "xml":"${xml}"}`;
 
+  document.getElementById("valikko").style.width = "0%";
+
   const userAction = async () => {
     const response = await fetch(`http://${HOST}:${PORT}/api/tallenna/${id}`, {
       method: 'POST',
@@ -805,15 +844,16 @@ Code.saveXML = id => {
         'Content-Type': 'application/json'
       }
     });
+  
   }
   userAction()
 };
 
 
 // oma
-Code.lataaListaTallennetuista = () => {
+Code.lataaListaTallennetuista = tyyppi => {
 
-   const userAction = async () => {
+    const userAction = async () => {
     const response = await fetch(`http://${HOST}:${PORT}/api/ohjelmat/`);
     const ohjelmat = await response.json();
   
@@ -828,15 +868,29 @@ Code.lataaListaTallennetuista = () => {
         timeZone: 'Europe/Helsinki'
       };
       const muokattu = new Date(o["muokattu"]).toLocaleDateString('fi-FI', options);
-      ohjelmalista += `<a href="#" id="load-prog-id-${o.id}">${o.nimi} - ${muokattu}</a>`;
-    }
-    document.getElementById("ohjelmalista").innerHTML = ohjelmalista;
-    for (let o of document.getElementById('ohjelmalista').childNodes) {
-      Code.bindClick(o.id, () => Code.confirmLoad(o.id.replace('load-prog-id-', '')));      
+      ohjelmalista += `<a href="#" id="prog-id-${o.id}" name="${o.nimi}">${o.nimi}  &nbsp;&nbsp <span class="moddate">${muokattu}</span></a>`;
     }
     
-    document.getElementById("lataus_valikko").style.width = "100%"; 
-    Code.bindClick('valikkoKiinni_2', () => { document.getElementById("lataus_valikko").style.width = "0%"; });
+    // tämä on latauksia varten
+    if (tyyppi === 'lataus') {
+      document.getElementById("latauslista").innerHTML = ohjelmalista.replaceAll('prog-id-', 'load-id-');
+      for (let o of document.getElementById('latauslista').childNodes) {
+        Code.bindClick(o.id, () => Code.confirmLoad(o.id.replace('load-id-', '')));
+      }
+      document.getElementById("lataus_valikko").style.width = "100%"; 
+      Code.bindClickOnce('valikkoKiinni_2', () => { document.getElementById("lataus_valikko").style.width = "0%"; });
+    }
+    
+    // tämä on poistoja varten
+    if (tyyppi === 'poisto') {
+      document.getElementById("poistolista").innerHTML = ohjelmalista.replaceAll('prog-id-', 'delete-id-');
+      for (let o of document.getElementById('poistolista').childNodes) {
+        Code.bindClick(o.id, () => Code.confirmDelete(o.id.replace('delete-id-', '')));
+      }
+      document.getElementById("poistovalikko").style.width = "100%"; 
+      Code.bindClick('poistovalikkokiinni', () => { document.getElementById("poistovalikko").style.width = "0%"; });
+    }
+    
   }
 
   userAction();
@@ -844,34 +898,60 @@ Code.lataaListaTallennetuista = () => {
 
 
 Code.confirmLoad = id => {
-  if (Code.workspace.getAllBlocks(false).length < 2) {
-    Code.loadSavedProgram(id);
-  }
-  else {
+  // if (Code.workspace.getAllBlocks(false).length < 2) {
+  //   Code.loadSavedProgram(id);
+  // }
+  if (id > 0) {
     document.getElementById("lataus_varmistus").style.width = "100%";
-    Code.bindClick('lataus_varmistus_yes', () => { document.getElementById("lataus_varmistus").style.width = "0%"; Code.loadSavedProgram(id); });
-    Code.bindClick('lataus_varmistus_cancel', () => { document.getElementById("lataus_varmistus").style.width = "0%"; });
-    Code.bindClick('lataus_varmistus_close', () => { document.getElementById("lataus_varmistus").style.width = "0%"; });
+    Code.bindClickOnce('lataus_varmistus_yes', () => { document.getElementById("lataus_varmistus").style.width = "0%"; Code.stopUserProgram(); Code.loadSavedProgram(id); });
+    Code.bindClickOnce('lataus_varmistus_cancel', () => { document.getElementById("lataus_varmistus").style.width = "0%"; });
+    Code.bindClickOnce('lataus_varmistus_close', () => { document.getElementById("lataus_varmistus").style.width = "0%"; });
   }
 }
 
-// oma - after confirmLoad
+// oma - confirmLoad jälkeen
 Code.loadSavedProgram = id => {
   if (id === 0) {
-    console.log('Ladattavan ohjelman id === 0.');
-    
+    console.log('Ladattavan ohjelman id === 0.'); 
     return;
   }
   const userAction = async () => {
     const response = await fetch(`http://${HOST}:${PORT}/api/ohjelmat/` + id);
     const program = await response.json();
     let xml = program.xml.replace(/'/g, '"');
+    document.getElementById('saveName').value = program.nimi;
     Code.workspace.clear();
     Code.loadBlocks(xml);
     document.getElementById("lataus_varmistus").style.width = "0%";
     document.getElementById("lataus_valikko").style.width = "0%";
     document.getElementById("valikko").style.width = "0%";
+    // Code.bindClick('lataus_varmistus_yes');
     // workspace.updateToolbox();
+  }
+  userAction()
+}
+
+Code.confirmDelete = id => {
+  document.getElementById("poistonimi").innerHTML = document.getElementById(`delete-id-${id}`).getAttribute('name');
+  document.getElementById("poistovarmistus").style.width = "100%";
+  Code.bindClickOnce('poistovarmistus_yes', () => { document.getElementById("poistovarmistus").style.width = "0%"; Code.deleteSavedProgram(id); });
+  Code.bindClickOnce('poistovarmistus_cancel', () => { document.getElementById("poistovarmistus").style.width = "0%"; });
+  Code.bindClickOnce('poistovarmistus_close', () => { document.getElementById("poistovarmistus").style.width = "0%"; });
+}
+
+// oma - confirmDelete jälkeen
+Code.deleteSavedProgram = id => {
+  if (id === 0) {
+    console.log('Poistettavan ohjelman id === 0.');
+    return;
+  }
+  const userAction = async () => {
+    fetch(`http://${HOST}:${PORT}/api/poista/` + id, {
+        method: 'DELETE'
+      }
+    );
+    document.getElementById("poistovarmistus").style.width = "0%";
+    document.getElementById(`delete-id-${id}`).style.display = "none";
   }
   userAction()
 }

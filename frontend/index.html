@@ -17,11 +17,12 @@
   <script src="./code.js"></script>
   <script src="./blocks.js"></script>
 
+
 </head>
 
 <body>
   <table width="100%" height="100%">
-    <tr>
+    <tr class="topbar">
       <td>
         <h1>
           <!-- <a href="https://developers.google.com/blockly/">Blockly</a>&rlm; &gt;
@@ -29,35 +30,58 @@
           <span id="title">...</span>
         </h1>
       </td>
-      <td class="farSide">
+      <td class="farSide topbar">
         <select id="languageMenu"></select>
       </td>
     </tr>
-    <tr>
-      <td>
+    <tr class="topbar">
+      <td class="topbar">
         <span class="valikkopainike" id="valikkoAuki">&#9776; Valikko</span>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <button id="donetestinappi">Pyydä "done"</button>
-        <button id="testinappi">Testausnappi</button>
+        <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+        <!-- <button id="donetestinappi">Pyydä "done"</button> -->
+        <!-- <button id="testinappi">Testausnappi</button> -->
       </td>
+
       <td>
+
+        <div id="poistovalikko" class="overlay">
+          <a href="javascript:void(0)" id="poistovalikkokiinni" class="closebtn">&times;</a>
+          <a class="header">Poista ohjelmia</a>
+          <div id="poistolista" class="overlay-content"></div>
+        </div>
+
+        <div id="poistovarmistus" class="overlay">
+          <a href="javascript:void(0)" id="poistovarmistus_close" class="closebtn">&times;</a>
+          <div id="poistovarmistus_teksti" class="overlay-content">
+            <p>Olet poistamassa tallennettua ohjelmaa <span id="poistonimi" class="highlight"></span> pysyvästi. Poistetaanko?
+            </p>
+            <br>
+            <a href="#" id='poistovarmistus_yes' disabled><span class="warningred">Poista</span></a>
+            <br>
+            <br>
+            <a href="#" id='poistovarmistus_cancel' disabled><span class="okwhite">Peruuta</span></a>
+          </div>
+        </div>
 
         <div id="lataus_valikko" class="overlay">
           <a href="javascript:void(0)" id="valikkoKiinni_2" class="closebtn">&times;</a>
-          <div id="ohjelmalista" class="overlay-content">
+          <a class="header">Lataa ohjelma</a>
+          <div id="latauslista" class="overlay-content">
           </div>
         </div>
+
         <div id="lataus_varmistus" class="overlay">
           <a href="javascript:void(0)" id="lataus_varmistus_close" class="closebtn">&times;</a>
           <div id="lataus_varmistus_teksti" class="overlay-content">
             <p>Lataaminen korvaa avoinna olevan ohjelman. Jatketaanko?</p>
             <br>
-            <a href="#" id='lataus_varmistus_yes' disabled>Lataa</a>
+            <a href="#" id='lataus_varmistus_yes' disabled><span class="okwhite">Lataa</span></a>
             <br>
             <br>
-            <a href="#" id='lataus_varmistus_cancel' disabled>Peruuta</a>
+            <a href="#" id='lataus_varmistus_cancel' disabled><span class="okwhite">Peruuta</span></a>
           </div>
         </div>
+
         <div id="varmistus" class="overlay">
           <a href="javascript:void(0)" id="varmistus_close" class="closebtn">&times;</a>
           <div id="varmistus_teksti" class="overlay-content"></div>
@@ -66,22 +90,27 @@
           <a href="javascript:void(0)" id="valikkoKiinni" class="closebtn">&times;</a>
           <div class="overlay-content">
             <a href="#" disabled>Ohjelman nimi</a>
-            <input value="XYZ" id="saveName" required>
+            <!-- <input value="XYZ" id="saveName" required> -->
+            <input id="saveName" required autocomplete="off">
+            <br><br><br>
+            <a id="saveButton" href="#">Tallenna</a>
             <a href="#">____</a>
             <br>
-            <a id="saveButton" href="#">Tallenna</a>
-            <a id="testLista" href="#">Lataa</a>
+            <a id="latausLista" href="#">Lataa ohjelma</a>
+            <br>
+            <a id="poistoLista" href="#">Poista ohjelmia</a>
+            <br>
             <a href="#">Tiedot</a>
           </div>
         </div>
       </td>
     </tr>
-    <tr>
-        <td>
-          <hr>
+    <tr class="topbar">
+        <td class="topbar">
+          <!-- <hr>sfd -->
         </td>
-        <td>
-          <hr>
+        <td>&nbsp;
+          <!-- <hr>sdf -->
         </td>
       </tr>
     <tr>
@@ -102,14 +131,17 @@
             <td class="tabmin">&nbsp;</td> -->
             <td id="tab_xml" class="taboff">XML</td>
             <td class="tabmax">
+              <button id="runButton" class="notext primary" title="...">
+                <img src='./1x1.gif' class="run icon21">
+              </button>
+              <button id="stopButton" class="notext" title="...">
+                <img src='./1x1.gif' class="stop icon21">
+              </button>
               <button id="trashButton" class="notext" title="...">
                 <img src='./1x1.gif' class="trash icon21">
               </button>
               <button id="linkButton" class="notext" title="...">
                 <img src='./1x1.gif' class="link icon21">
-              </button>
-              <button id="runButton" class="notext primary" title="...">
-                <img src='./1x1.gif' class="run icon21">
               </button>
             </td>
           </tr>

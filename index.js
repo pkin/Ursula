@@ -32,6 +32,12 @@ app.get('/api/ohjelmat/:id', (req, res) => {
     return res.status(200).json( lataaOhjelma(req.params.id) );
 });
 
+app.delete('/api/poista/:id', (req, res) => {
+    console.log('poistetaan ohjelma', req.params.id);
+    poistaOhjelma(req.params.id);
+    return res.status(204).end();
+});
+
 app.post('/api/nimiolemassa', (req, res) => {
     return res.status(200).json({"exists": onkoNimiTallennetuissa(req.body.name)});
 });
@@ -78,6 +84,19 @@ const lataaOhjelma = id => {
         return undefined;
     }
     return ohjelma;
+}
+
+const poistaOhjelma = id => {
+    const fs = require('fs');
+    const hakemisto = './tallennukset/';
+    const tiedosto = id + '.json';
+    fs.unlink(hakemisto + tiedosto, err => {
+            if (err) {
+                console.log("Virhe tiedoston poistossa!");
+                return undefined;
+            }
+        }
+    );
 }
 
 //  Lataa listan ohjelmista, ei varsinaista sisältöä
@@ -239,6 +258,11 @@ io.on('connection', (socket) => {
         if (!isNaN(duration)) {
             setTimeout( () => { socket.emit('done') }, duration); 
         }
+    });
+
+    socket.on('stop', data => {
+        console.log("received: 'stop'");
+        socket.emit('done'); 
     });
 
     // kokeilua...
