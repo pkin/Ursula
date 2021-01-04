@@ -5,14 +5,9 @@
   <meta name="google" value="notranslate">
   <title>Blockly Demo:</title>
   <link rel="stylesheet" href="style.css">
-  <!-- <script src="./google-blockly-9ab6273/storage.js"></script> -->
   <script src="./google-blockly-9ab6273/blockly_compressed.js"></script>
   <script src="./google-blockly-9ab6273/blocks_compressed.js"></script>
   <script src="./google-blockly-9ab6273/javascript_compressed.js"></script>
-  <!-- <script src="./google-blockly-9ab6273/python_compressed.js"></script> -->
-  <!-- <script src="./google-blockly-9ab6273/php_compressed.js"></script> -->
-  <!-- <script src="./google-blockly-9ab6273/lua_compressed.js"></script> -->
-  <!-- <script src="./google-blockly-9ab6273/dart_compressed.js"></script> -->
   <script src="./socket.io/socket.io.js"></script>
   <script src="./code.js"></script>
   <script src="./blocks.js"></script>
@@ -25,8 +20,6 @@
     <tr class="topbar">
       <td>
         <h1>
-          <!-- <a href="https://developers.google.com/blockly/">Blockly</a>&rlm; &gt;
-          <a href="../index.html">Demos</a>&rlm; &gt; -->
           <span id="title">...</span>
         </h1>
       </td>
@@ -37,45 +30,21 @@
     <tr class="topbar">
       <td class="topbar">
         <span class="valikkopainike" id="valikkoAuki">&#9776; Valikko</span>
-        <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-        <!-- <button id="donetestinappi">Pyydä "done"</button> -->
-        <!-- <button id="testinappi">Testausnappi</button> -->
       </td>
 
       <td>
 
         <div id="tietovalikko" class="overlay">
           <a href="javascript:void(0)" id="tietovalikkokiinni" class="closebtn">&times;</a>
-          <!-- <a class="header">Poista ohjelmia</a> -->
           <div id="tietoa" class="overlay-content">
             <p>
-              <!-- Yhteistyössä<br> -->
-            <img src="tuni.png"><br><br>
-            Helsingin yliopisto<br><br>
-            Kangasalan kaupunki
-              <!-- <svg id="kangasala" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 691.65 170.08">
-                <defs>
-                  <style>.cls-1 {
-                      fill: #aab;
-                    }</style>
-                </defs>
-                <title>Kangasala_logo_RGB</title>
-                <path class="cls-1" d="M148.42,42.58a36.06,36.06,0,1,0,0,59.42v6.35h17.23V36.23H148.42Zm0,31.49a20.48,20.48,0,1,1,0-3.56Z"></path>
-                <path class="cls-1" d="M399,42.58A36.06,36.06,0,1,0,399,102v6.35h17.23V36.23H399Zm0,31.49a20.48,20.48,0,1,1,0-3.56Z"></path>
-                <path class="cls-1" d="M545.79,42.58a36.06,36.06,0,1,0,0,59.42v6.35H563V36.23H545.79Zm0,31.49a20.48,20.48,0,1,1,0-3.56Z"></path>
-                <path class="cls-1" d="M660.25,36.23v6.35a36.06,36.06,0,1,0,0,59.42v6.35h17.23V36.23Zm0,37.84a20.48,20.48,0,1,1,0-3.56Z"></path>
-                <rect class="cls-1" x="575.63" y="14.17" width="17.23" height="94.17"></rect>
-                <path class="cls-1" d="M215.89,36.23a35.88,35.88,0,0,0-20.41,6.35V36.23H178.25v72.12h17.23V70.51a20.49,20.49,0,0,1,40.91,1.78v36.06H252v-38h-.05A36.11,36.11,0,0,0,215.89,36.23Z"></path>
-                <polygon class="cls-1" points="94.49 14.17 70.94 14.17 33.01 53.95 33.01 14.17 14.17 14.17 14.17 108.35 33.01 108.35 33.01 66.34 73.17 108.35 98.71 108.35 50.37 59.03 94.49 14.17"></polygon>
-                <path class="cls-1" d="M297.25,36.19a36.06,36.06,0,1,0,36.07,36.05A36.1,36.1,0,0,0,297.25,36.19Zm0,56.54a20.49,20.49,0,1,1,20.49-20.49A20.51,20.51,0,0,1,297.25,92.73Z"></path>
-                <path class="cls-1" d="M317.74,119.85a20.49,20.49,0,0,1-41,0v-2.54H261.18v2.54a36.07,36.07,0,0,0,72.14,0v-2.54H317.74Z"></path>
-                <path class="cls-1" d="M325.32,17.6a9.32,9.32,0,1,0,9.32,9.32A9.33,9.33,0,0,0,325.32,17.6Z"></path>
-                <path class="cls-1" d="M458.41,64.37q-6.92-2-9.24-3.66a5.32,5.32,0,0,1-2.33-4.58q0-5.19,9.71-5.19a41.06,41.06,0,0,1,10.3,1.4,37.55,37.55,0,0,1,9.51,3.79l2.13-14.62a36,36,0,0,0-10.24-3.86,55,55,0,0,0-12.5-1.46q-12.76,0-20.07,5.58t-7.32,15.29q0,8.64,5.12,13.75t17.08,8.44q7.59,2.13,10,3.72a5.26,5.26,0,0,1,2.39,4.66q0,5.72-11.3,5.71a42.43,42.43,0,0,1-22.2-6.78l-2.27,15a29.2,29.2,0,0,0,10.64,4.72,57.89,57.89,0,0,0,14.63,1.79q13.69,0,21.47-5.58a17.92,17.92,0,0,0,7.78-15.42q0-8.9-5.25-14T458.41,64.37Z"></path>
-              </svg> -->
+            <br><br>
+            Kangasalan kaupunki | Tampereen yliopisto | Helsingin yliopisto
             </p>
             <p><img src="blockly.png"><br>
-              Blockly is a library from Google for building beginner-friendly block-based programming languages.</p>
-            <p>Lisenssitiedot... </p>
+            <small>Blockly is a library from Google for building beginner-friendly block-based programming languages.</small>
+            </p>
+            <p><small>Code demo by Neil Fraser. Copyright 2012 Google Inc. Licensed under the Apache License, Version 2.0.</small></p>
             </div>
         </div>
 
@@ -145,7 +114,6 @@
           <!-- <hr>sfd -->
         </td>
         <td>&nbsp;
-          <!-- <hr>sdf -->
         </td>
       </tr>
     <tr>
@@ -156,14 +124,6 @@
             <td class="tabmin">&nbsp;</td>
             <td id="tab_javascript" class="taboff">JavaScript</td>
             <td class="tabmin">&nbsp;</td>
-            <!-- <td id="tab_python" class="taboff">Python</td>
-            <td class="tabmin">&nbsp;</td>
-            <td id="tab_php" class="taboff">PHP</td>
-            <td class="tabmin">&nbsp;</td>
-            <td id="tab_lua" class="taboff">Lua</td>
-            <td class="tabmin">&nbsp;</td>
-            <td id="tab_dart" class="taboff">Dart</td>
-            <td class="tabmin">&nbsp;</td> -->
             <td id="tab_xml" class="taboff">XML</td>
             <td class="tabmax">
               <button id="runButton" class="notext primary" title="...">
@@ -513,9 +473,6 @@
     
     <sep></sep>
 
-    <!-- <category name="Robot" colour="%{BKY_LOOPS_HUE}" custom="ROBOT_COMMANDS" >
-      <block type="robot_start"></block>
-    </category> -->
     <category name="Robotti" colour="%{BKY_LOOPS_HUE}" expanded="false">
       <block type="relative_move">
         <value name="move_angle">
@@ -604,254 +561,7 @@
       </block>
     </category>
 
-    <!-- <category name="Testipalikat" colour="%{BKY_LOOPS_HUE}" expanded="false">
-      <block type="temp4">
-        <field name="FIELDNAME">0</field>
-
-      </block>
-      <block type="tts2">
-        <value name="turn_angle">
-          <shadow type="math_number">
-            <field name="NUM">0</field>
-          </shadow>
-        </value>
-      </block>     
-      <block type="liiku_1">
-        <value name="määrä">
-          <shadow type="math_number">
-            <field name="NUM">0</field>
-          </shadow>
-        </value>
-      </block>
-      <block type="käänny_1">
-        <value name="kulma">
-          <shadow type="math_number">
-            <field name="NUM">0</field>
-          </shadow>
-        </value>
-      </block>
-      <block type="käänny_2">
-      </block>
-      <block type="ttemp_print"></block>
-      <block type="liiku_eteen_cm"></block>
-      <block type="liiku_taakse_cm"></block>
-      <block type="kaanny_vasemmalle_astetta"></block>
-      <block type="kaanny_oikealle_astetta"></block>
-      <block type="odota_sekuntia"></block>
-      <block type="poimi_pallo"></block>
-      <block type="avaa_koura"></block>
-      <block type="liikuta_kasi_eteen"></block>
-      <block type="liikuta_kasi_ylos"></block>
-      <block type="send"></block>
-      <block type="test_block"></block>
-      <block type="test_block_2"></block> -->
-      
-      <!-- <block type="liikuta_kasi_alas"></block>
-      <block type="liikuta_kasi_sivulle"></block>
-      <block type="vilkuta"></block> 
-      <block type="robot_run"></block> -->
-    <!-- </category> -->
     <sep></sep>
-    <!-- test test test  -->
-    <!-- <category name="Library" expanded="true">
-      <category name="Randomize">
-        <block type="procedures_defnoreturn">
-          <mutation>
-            <arg name="list"></arg>
-          </mutation>
-          <field name="NAME">randomize</field>
-          <statement name="STACK">
-            <block type="controls_for" inline="true">
-              <field name="VAR">x</field>
-              <value name="FROM">
-                <block type="math_number">
-                  <field name="NUM">1</field>
-                </block>
-              </value>
-              <value name="TO">
-                <block type="lists_length" inline="false">
-                  <value name="VALUE">
-                    <block type="variables_get">
-                      <field name="VAR">list</field>
-                    </block>
-                  </value>
-                </block>
-              </value>
-              <value name="BY">
-                <block type="math_number">
-                  <field name="NUM">1</field>
-                </block>
-              </value>
-              <statement name="DO">
-                <block type="variables_set" inline="false">
-                  <field name="VAR">y</field>
-                  <value name="VALUE">
-                    <block type="math_random_int" inline="true">
-                      <value name="FROM">
-                        <block type="math_number">
-                          <field name="NUM">1</field>
-                        </block>
-                      </value>
-                      <value name="TO">
-                        <block type="lists_length" inline="false">
-                          <value name="VALUE">
-                            <block type="variables_get">
-                              <field name="VAR">list</field>
-                            </block>
-                          </value>
-                        </block>
-                      </value>
-                    </block>
-                  </value>
-                  <next>
-                    <block type="variables_set" inline="false">
-                      <field name="VAR">temp</field>
-                      <value name="VALUE">
-                        <block type="lists_getIndex" inline="true">
-                          <mutation statement="false" at="true"></mutation>
-                          <field name="MODE">GET</field>
-                          <field name="WHERE">FROM_START</field>
-                          <value name="AT">
-                            <block type="variables_get">
-                              <field name="VAR">y</field>
-                            </block>
-                          </value>
-                          <value name="VALUE">
-                            <block type="variables_get">
-                              <field name="VAR">list</field>
-                            </block>
-                          </value>
-                        </block>
-                      </value>
-                      <next>
-                        <block type="lists_setIndex" inline="false">
-                          <value name="AT">
-                            <block type="variables_get">
-                              <field name="VAR">y</field>
-                            </block>
-                          </value>
-                          <value name="LIST">
-                            <block type="variables_get">
-                              <field name="VAR">list</field>
-                            </block>
-                          </value>
-                          <value name="TO">
-                            <block type="lists_getIndex" inline="true">
-                              <mutation statement="false" at="true"></mutation>
-                              <field name="MODE">GET</field>
-                              <field name="WHERE">FROM_START</field>
-                              <value name="AT">
-                                <block type="variables_get">
-                                  <field name="VAR">x</field>
-                                </block>
-                              </value>
-                              <value name="VALUE">
-                                <block type="variables_get">
-                                  <field name="VAR">list</field>
-                                </block>
-                              </value>
-                            </block>
-                          </value>
-                          <next>
-                            <block type="lists_setIndex" inline="false">
-                              <value name="AT">
-                                <block type="variables_get">
-                                  <field name="VAR">x</field>
-                                </block>
-                              </value>
-                              <value name="LIST">
-                                <block type="variables_get">
-                                  <field name="VAR">list</field>
-                                </block>
-                              </value>
-                              <value name="TO">
-                                <block type="variables_get">
-                                  <field name="VAR">temp</field>
-                                </block>
-                              </value>
-                            </block>
-                          </next>
-                        </block>
-                      </next>
-                    </block>
-                  </next>
-                </block>
-              </statement>
-            </block>
-          </statement>
-        </block>
-      </category>
-      <category name="Jabberwocky">
-        <block type="text_print">
-          <value name="TEXT">
-            <block type="text">
-              <field name="TEXT">'Twas brillig, and the slithy toves</field>
-            </block>
-          </value>
-          <next>
-            <block type="text_print">
-              <value name="TEXT">
-                <block type="text">
-                  <field name="TEXT">  Did gyre and gimble in the wabe:</field>
-                </block>
-              </value>
-              <next>
-                <block type="text_print">
-                  <value name="TEXT">
-                    <block type="text">
-                      <field name="TEXT">All mimsy were the borogroves,</field>
-                    </block>
-                  </value>
-                  <next>
-                    <block type="text_print">
-                      <value name="TEXT">
-                        <block type="text">
-                          <field name="TEXT">  And the mome raths outgrabe.</field>
-                        </block>
-                      </value>
-                    </block>
-                  </next>
-                </block>
-              </next>
-            </block>
-          </next>
-        </block>
-        <block type="text_print">
-          <value name="TEXT">
-            <block type="text">
-              <field name="TEXT">"Beware the Jabberwock, my son!</field>
-            </block>
-          </value>
-          <next>
-            <block type="text_print">
-              <value name="TEXT">
-                <block type="text">
-                  <field name="TEXT">  The jaws that bite, the claws that catch!</field>
-                </block>
-              </value>
-              <next>
-                <block type="text_print">
-                  <value name="TEXT">
-                    <block type="text">
-                      <field name="TEXT">Beware the Jubjub bird, and shun</field>
-                    </block>
-                  </value>
-                  <next>
-                    <block type="text_print">
-                      <value name="TEXT">
-                        <block type="text">
-                          <field name="TEXT">  The frumious Bandersnatch!"</field>
-                        </block>
-                      </value>
-                    </block>
-                  </next>
-                </block>
-              </next>
-            </block>
-          </next>
-        </block>
-      </category>
-    </category> -->
 
 </body>
 </html>
